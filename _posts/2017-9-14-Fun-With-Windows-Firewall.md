@@ -1,0 +1,10 @@
+---
+layout: post
+title: Fun With Windows Firewall
+---
+
+Or maybe this is my actual first post.  First technical post anyway.  I did this thing a while back, and it turned out to be surprisingly useful despite it being an imperfect solution.  But I guess if it improves productivity and repeatability it can't be all bad.
+
+So I'm not sure if the stars were aligned just right, or someone switched the decaf with regular somewhere, or if CIO magazine ran an article entitled "Security, why you need it and how to get it", but all of a sudden we had a group decision to enable host-based firewalls on all our Windows systems.  That's great!  But with a lack of any meaningful configuration management tools or processes, that's not so great.  The eager, naive me said "No problem, we'll use a GPO to enable the firewall and set rules for our most common traffic patterns, then the application and dev teams can handle creating local rules for their application traffic."  Oh sweet child, how nice that would be.  In the real world that translates into phone call after phone call of either "Can you tell me what ports my app uses and make those rules for me?", or more often, "You did something to my server and it's broken now OMG fix it!".  There was the occasionally pleasant "Here's the list of ports according to the vendor, please make rules".
+
+All those boil down to the same thing, I'm creating local rules on servers one at a time.  [Powershell](https://technet.microsoft.com/en-us/library/jj554906(v=wps.630).aspx) to the rescue!  Say what?  Windows Server 2012R2 only?  Well I've got a pile of old 2008 servers ([yeah I know](https://support.microsoft.com/en-us/lifecycle/search?alpha=windows%20server%202008)), so I guess I'm stuck with [netsh commands](https://technet.microsoft.com/en-us/library/dd734783(v=ws.10).aspx).  Additionally, reading the wall of text known as the firewall log is not advisable for long term eyeball health (or sanity).  So let's start with the log file first and work our way back from there.
