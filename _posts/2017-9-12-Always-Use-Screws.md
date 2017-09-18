@@ -2,7 +2,7 @@
 layout: post
 title: First Post!
 ---
-Well I resisted the inevitable for a long time, but writing stuff down is one of humanities greatest achievements so who am I to argue with progress.  This will mostly be a technical blog, where I'll chronicle interesting technical problems/solutions as I come across them.  Partly to contribute to the hive-mind of information on the Internet, partly to train myself to think in a recordable manner.  It's really easy to brute-force your way into a solution, it's a little harder to step back, create something in a logical and reproduceable manner, then explain it to someone else.  I don't guess this blog will stand out from the crowd, but maybe something will show up in a google search somewhere and some piece of info will totally save someone's day.  Or for the prospective employer reading this look at how good I can R do english good!
+Well I resisted the inevitable for a long time, but writing stuff down is one of humanity's greatest achievements so who am I to argue with progress.  This will mostly be a technical blog, where I'll chronicle interesting technical problems/solutions as I come across them.  Partly to contribute to the hive-mind of information on the Internet, partly to train myself to think in a recordable manner.  It's really easy to brute-force your way into a solution, it's a little harder to step back, create something in a logical and reproduceable manner, then explain it to someone else.  I don't guess this blog will stand out from the crowd, but maybe something will show up in a google search somewhere and some piece of info will totally save someone's day.  Or for the prospective employer reading this look at how good I can R do english good!
 
 ![alt text][image]
 
