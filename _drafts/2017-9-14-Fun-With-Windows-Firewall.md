@@ -43,8 +43,9 @@ And that's about it, a relatively useful set of tools that ended up saving a pre
 So this ended up being pretty big in its own right so let's break here and do a "Part 2" to start going over the details of the various commands.
 
 Firewall Cmdlets index:
+
 * Part 1(this post): Intro
-* Part 2: Get-FirewallLog
+* [Part 2: Get-FirewallLog](Fun-With-Windows-Firewall-pt2-Get-FirewallLog)
 * Part 3: Get-FirewallRules, Add-FirewallRules
 * Part 4: Compare-FirewallRules, Copy-FirewallRules
 * Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort
