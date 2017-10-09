@@ -1,5 +1,7 @@
 # Get-FirewallLog
 
+This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](2017-9-14-Fun-With-Windows-Firewall.md).
+
 TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/blob/master/WindowsFirewallcommands/Get-FirewallLog.ps1)
 
 The goal of this cmdlet is pretty straight forward:  turn this painful wall of text:
@@ -10,7 +12,9 @@ Into sweet object-oriented goodness:
 
 ![objects!](/images/firewalllogPS.png)
 
-To do this we use the amazing, and kind of scary, [ConvertFrom-String](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertfrom-string?view=powershell-5.1).  I have no idea how this thing does its magic, but I think there might be some actual voodoo in there somewhere.  Basically you create a template file that is a representative sample of the text you want to parse, and you mark it up with variable names for each element you want.  So in the case of our firewall log we take this:
+## ConvertFrom-String
+
+To do this we use the amazing, and kind of scary, [ConvertFrom-String](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/convertfrom-string?view=powershell-5.1).  Now I have no idea how this thing does its magic, but I think there might be some actual voodoo in there somewhere.  Basically you create a template file that is a representative sample of the text you want to parse, and you mark it up with variable names for each element you want.  So in the case of our firewall log we take this:
 
 ```text
 $FirewallLogTemplate = @'
@@ -53,6 +57,8 @@ Now we have the sample firewall log entries.  This is a simple tab separated lis
 
 So that's pretty cool, but what happens when we get to the second line?  We're going to have a bunch of duplicate properties when what we actually want is a second object in the output stream.  So we use the '*' designation on the variable name for the first item on that line to indicate that this should be the beginning of a new object.  And that's about it.  We repeat this for a few more lines just to give ConvertFrom-String some more data for its matching algorithms.  Then when we run ConvertFrom-String and give it both the template and the file to process, it'll do its dark magic and spit out an array of glorious objects.  You can then do sorts, filters, csv outputs, etc.  If you find that convertfrom-string doesn't match a particular value you can ~~sacrifice another chicken~~  add another line with the problematic data to the template file and it should pick that up as part of its pattern.  Thanks Powershell!
 
+## Getting the data
+
 Now we could stop there and have a pretty cool thing, but lets take it a small step further for better functionality.  Ideally we would have a cmdlet that will take just a computer name and a credential object and return the firewall log data.  So to do that we need a way to get the firewall log from the remote machine for processing.  Paging [Invoke-Command](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-5.1), you have a call on line 1.  PS remoting is generally pretty firewall friendly, and we have a computer name and credential object so it should be a trivial thing to run a get-content and pull the file contents over the remote session.
 
 ![waiting for paint to dry](/images/Get-FirewallLog-WSMAN.png)
@@ -88,9 +94,12 @@ If the computer has the firewall disabled the file won't exist.
         }
 ```
 
-Firewall Cmdlets index:
+And that's about it.  Because we did things the Powershell way we can easily pipe this output to out-gridview, export-csv, etc.  Next up we tackle the rules themselves, applying the same desire for objects to what are essentially netsh commands for backward compatibility.  Click below if ye dare (or something).
 
-* Part 1: Intro
-* Part 2(this post): Get-FirewallLog
-* Part 3: Get-FirewallRules, Add-FirewallRules
-* Part 4: Compare-FirewallRules, Copy-FirewallRules, Get-ExecutableByPort
+## Firewall Cmdlets index
+
+* [Part 1: Intro](2017-9-14-Fun-With-Windows-Firewall)
+* [Part 2: Get-FirewallLog](Fun-With-Windows-Firewall-pt2-Get-FirewallLog)
+* [Part 3: Get-FirewallRules, Add-FirewallRules](2017-10-9-Fun-With-Windows-Firewall-pt3-Get-Firewall-Rules)
+* Part 4: Compare-FirewallRules, Copy-FirewallRules
+* Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort
