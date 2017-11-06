@@ -3,7 +3,7 @@ layout: post
 title: Fun With Windows Firewall pt. 2
 ---
 
-This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](2017-9-14-Fun-With-Windows-Firewall.md).
+This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](/Fun-With-Windows-Firewall).
 
 TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/blob/master/WindowsFirewallcommands/Get-FirewallLog.ps1)
 
@@ -104,8 +104,8 @@ And that's about it.  Because we did things the Powershell way we can easily pip
 
 ## Firewall Cmdlets index
 
-* [Part 1: Intro](../Fun-With-Windows-Firewall)
-* [Part 2: Get-FirewallLog](../Fun-With-Windows-Firewall-pt2-Get-FirewallLog)
-* [Part 3: Get-FirewallRules, Add-FirewallRules](../Fun-With-Windows-Firewall-pt3-Get-Firewall-Rules)
+* [Part 1: Intro](/Fun-With-Windows-Firewall)
+* [Part 2: Get-FirewallLog](/Fun-With-Windows-Firewall-pt2-Get-FirewallLog)
+* [Part 3: Get-FirewallRules, Add-FirewallRules](/Fun-With-Windows-Firewall-pt3-Get-Firewall-Rules)
 * Part 4: Compare-FirewallRules, Copy-FirewallRules
 * Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort
