@@ -4,6 +4,8 @@ title: Fun With Windows Firewall
 ---
 So I did this thing a while back, and it turned out to be surprisingly useful despite it being an imperfect solution.  But I guess if it improves productivity and repeatability it can't be all bad.  So I thought I'd share, plus it gives me something to write about.  Gotta keep those fingers busy!  Anyway, there are a couple of neat, Powershell-y things in these cmdlets that make them work really well together.
 
+TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/WindowsFirewallcommands)
+
 # What have I done?
 
 So I'm not sure if the stars were aligned just right, or someone switched the decaf with regular somewhere, or if CIO magazine ran an article entitled "Security, why you need it and how to get it", but all of a sudden we had a group decision to enable host-based firewalls on all our Windows systems.  That's great!  But with a lack of any meaningful configuration management tools or processes, that's not so great.  The eager, naive me said "No problem, we'll use a GPO to enable the firewall and set rules for our most common traffic patterns, then the application and dev teams can handle creating local rules for their application traffic."  Oh sweet child, how nice that would be.  In the real world that translates into phone call after phone call of either "Can you tell me what ports my app uses and make those rules for me?", or more often, "You did something to my server and it's broken now OMG fix it!".  There was the occasionally pleasant "Here's the list of ports according to the vendor, please make rules".

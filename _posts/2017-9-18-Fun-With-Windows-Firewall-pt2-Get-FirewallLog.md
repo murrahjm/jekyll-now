@@ -5,7 +5,7 @@ title: Fun With Windows Firewall pt. 2
 
 This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](/Fun-With-Windows-Firewall).
 
-TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/blob/master/WindowsFirewallcommands/Get-FirewallLog.ps1)
+TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/WindowsFirewallcommands)
 
 # Get-FirewallLog
 
