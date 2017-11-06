@@ -35,7 +35,9 @@ Fields: date time action protocol src-ip dst-ip src-port dst-port size tcpflags 
 2017-04-07 10:45:43 DROP ICMP 10.32.72.58 10.96.101.190 - - 84 - - - - 0 0 - RECEIVE
 '@
 ```
+
 And turn it into this:
+
 ```powershell
 $FirewallLogTemplate = @'
 #Version: 1.5
@@ -105,7 +107,7 @@ And that's about it.  Because we did things the Powershell way we can easily pip
 ## Firewall Cmdlets index
 
 * [Part 1: Intro](/Fun-With-Windows-Firewall)
-* [Part 2: Get-FirewallLog](/Fun-With-Windows-Firewall-pt2-Get-FirewallLog)
-* [Part 3: Get-FirewallRules, Add-FirewallRules](/Fun-With-Windows-Firewall-pt3-Get-Firewall-Rules)
+* [Part 2: Get-FirewallLog](/Fun-With-Windows-Firewall-pt2)
+* [Part 3: Get-FirewallRules, Add-FirewallRules](/Fun-With-Windows-Firewall-pt3)
 * Part 4: Compare-FirewallRules, Copy-FirewallRules
 * Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort
