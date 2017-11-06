@@ -9,4 +9,4 @@ Jeremy is an old OPS guy from the dark ages of computing.  He started automating
 
 ### Contact me
 
-[murrahjm@outlook.com](mailto:murrahjm@outlook.com)
+[murrahjm@gmail.com](mailto:murrahjm@gmail.com)
