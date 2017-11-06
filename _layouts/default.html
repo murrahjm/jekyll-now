@@ -25,8 +25,8 @@
 
       <section>
         <div id="title">
-          <img class=".site-avatar" src="{{ site.avatar }}" />
-          <h1><a href="{{site.url}}">{{ site.title | default: site.github.repository_name }}</a></h1>
+          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
+          <h1><a href="{{ site.baseurl }}/">{{ site.title | default: site.github.repository_name }}</a></h1>
           <p>{{ site.description | default: site.github.project_tagline }}</p>
           <hr>
           <span class="credits left">Project maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
