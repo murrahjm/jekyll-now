@@ -18,4 +18,4 @@ TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/W
 * [Part 2: Get-FirewallLog](/Fun-With-Windows-Firewall-pt2)
 * [Part 3: Get-FirewallRules, Add-FirewallRules](/Fun-With-Windows-Firewall-pt3)
 * [Part 4: Compare-FirewallRules, Copy-FirewallRules](/Fun-With-Windows-Firewall-pt4)
-* Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort
+* [Part 5: Add-ServiceFirewallRules, Get-ExecutableByPort](/Fun-With-Windows-Firewall-pt5)
