@@ -1,3 +1,11 @@
+---
+layout: post
+title: Fun With Windows Firewall pt. 3
+---
+This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](2017-9-14-Fun-With-Windows-Firewall.md).
+
+TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/blob/master/WindowsFirewallcommands/Get-FirewallLog.ps1)
+
 # Get-FirewallRules
 
 A quick word about the process.  Basically in all these cmdlets we find the way to get the data, the "hook", then we just add a bunch of window dressing to make it pretty and functional.  In this case we need to get a list of all the existing firewall rules on the server.  So that's our "hook".  then we just wrap that up and do all the usual powershell things like this:

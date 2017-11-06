@@ -1,8 +1,14 @@
-# Get-FirewallLog
+---
+layout: post
+title: Fun With Windows Firewall pt. 2
+---
 
 This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](2017-9-14-Fun-With-Windows-Firewall.md).
 
 TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/blob/master/WindowsFirewallcommands/Get-FirewallLog.ps1)
+
+# Get-FirewallLog
+
 
 The goal of this cmdlet is pretty straight forward:  turn this painful wall of text:
 
