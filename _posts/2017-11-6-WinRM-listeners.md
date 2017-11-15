@@ -21,26 +21,26 @@ But wait there's more!  WinRM isn't just a web server, it's also a client (somet
 
 By default WinRM is like my 4 year old, it doesn't listen to anything.  But unlike my 4 year old getting it to listen to requests is pretty simple.
 
-```cmd
-REM create a listener on all IP addresses using HTTP transport
-REM The hard way:
+```powershell
+# create a listener on all IP addresses using HTTP transport
+# The hard way:
 winrm create winrm/config/listener?Address=*+Transport=HTTP
 netsh advfirewall firewall add rule name="WinRM HTTP" dir=in protocol=tcp localport=5985 action=allow
-REM The easy way:
+# The easy way:
 winrm quickconfig
 ```
 
 So that works, but what if instead of talking to your 4 year old you want to talk to your wife about all the ice cream you're going to eat when the kids are asleep.  Then you're either spelling things or doing pig latin or something equally rediculous.  That's where HTTPS comes in (kids are worse than hackers, seriously).  That's a little more involved as you need a certificate on the host to use when enabling a listener.  But other than that you'd do it like this:
 
-```cmd
-REM create a listener using HTTPS transport
-REM The hard way:
-REM First go find out the thumbprint of your server certificate
-REM First before that go get a certificate issued from an internal PKI or something
-REM First before that go get an internal PKI
+```powershell
+# create a listener using HTTPS transport
+# The hard way:
+# First go find out the thumbprint of your server certificate
+# First before that go get a certificate issued from an internal PKI or something
+# First before that go get an internal PKI
 winrm create winrm/config/listener?Address=*+Transport=HTTPS @{Hostname="ServerFQDN";CertificateThumbprint="97A2251B175DF6A2ABCB85FDF2FFF915DAB8"}
-REM The easy way:
-REM OK fine just create a self-signed cert with makecert.exe, but Jesus kicks a puppy every time you do that.
+# The easy way:
+# OK fine just create a self-signed cert with makecert.exe, but Jesus kicks a puppy every time you do that.
 winrm quickconfig -Transport:HTTPS
 ```
 
@@ -72,9 +72,9 @@ Listener
 
 Oh and on the off chance you want to remove a listener:
 
-```cmd
+```powershell
 winrm delete winrm/config/listener?Address=*+Transport=HTTPS
-REM or:
+# or:
 winrm delete winrm/config/listener?Address=*+Transport=HTTP
 ```
 
@@ -179,7 +179,7 @@ So that's a whole mess of stuff.  And it's not everything, but it's most of the 
 
 So that's a pretty good tool, and if one tool is good, then two tools is even better!  Enter Powershell:
 
-```Powershell
+```powershell
 # Powershell mounts the WSMan catalog as a file system or 'PSDrive'
 Get-PSDrive WSMan
 # standard filesystem commands like Get-ChildItem (gci or dir), Set-Location(cd) work
