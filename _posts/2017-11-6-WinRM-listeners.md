@@ -222,14 +222,18 @@ Note that the above examples are just syntax examples, and not any kind of recom
 whew!  Ok so I may not have met my goal of keeping this to a one-cup of coffee post, but hopefully it's a bit more compressed and digestible than the below wall of links.  Pretty much everything I wrote about I looked up in the below URLs though, so if you want more details they should all be in there.  I would say if you have any questions to post them here, but I haven't figured out how to add comments to this blog yet so you can't.  And really Internet comments just make me lose faith in humanity as a whole, so probably best to avoid that anyway.
 
 ## Reference links
+
 ### WinRM
-* https://support.microsoft.com/en-us/help/2019527/how-to-configure-winrm-for-https
-* https://msdn.microsoft.com/en-us/library/ee309365(v=vs.85).aspx
-* https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/
-* https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx
-* https://docs.microsoft.com/en-us/powershell/scripting/setup/winrmsecurity?view=powershell-5.1
-* https://msdn.microsoft.com/en-us/library/ee309367(v=vs.85).aspx
-* http://www.hurryupandwait.io/blog/certificate-password-less-based-authentication-in-winrm
+
+* [https://support.microsoft.com/en-us/help/2019527/how-to-configure-winrm-for-https](https://support.microsoft.com/en-us/help/2019527/how-to-configure-winrm-for-https)
+* [https://msdn.microsoft.com/en-us/library/ee309365(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/ee309365(v=vs.85).aspx)
+* [https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/](https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/)
+* [https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx)
+* [https://docs.microsoft.com/en-us/powershell/scripting/setup/winrmsecurity?view=powershell-5.1](https://docs.microsoft.com/en-us/powershell/scripting/setup/winrmsecurity?view=powershell-5.1)
+* [https://msdn.microsoft.com/en-us/library/ee309367(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/ee309367(v=vs.85).aspx)
+* [http://www.hurryupandwait.io/blog/certificate-password-less-based-authentication-in-winrm](http://www.hurryupandwait.io/blog/certificate-password-less-based-authentication-in-winrm)
+
 ### Double-Hop Authentication
-* https://blogs.technet.microsoft.com/askds/2008/06/13/understanding-kerberos-double-hop/
-* https://blogs.msdn.microsoft.com/besidethepoint/2010/05/08/double-hop-authentication-why-ntlm-fails-and-kerberos-works/
+
+* [https://blogs.technet.microsoft.com/askds/2008/06/13/understanding-kerberos-double-hop/](https://blogs.technet.microsoft.com/askds/2008/06/13/understanding-kerberos-double-hop/)
+* [https://blogs.msdn.microsoft.com/besidethepoint/2010/05/08/double-hop-authentication-why-ntlm-fails-and-kerberos-works/](https://blogs.msdn.microsoft.com/besidethepoint/2010/05/08/double-hop-authentication-why-ntlm-fails-and-kerberos-works/)
