@@ -98,7 +98,46 @@ $Base64RootCert = [convert]::tobase64string($rootcert.RawData)
 
 ```Powershell
 #Login to Azure if you haven't already
+#if you run this from a different machine than the gateway, you really only need the
+#base64rootcert variable from the above code block
 $Gateway = get-azurermvirtualnetworkgateway -resourcegroupname $ResourceGroupName
-Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol IkeV2,SSTP
+Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol SSTP
 Add-AzureRmVpnClientRootCertificate -VpnClientRootCertificateName P2SRootCert -VirtualNetworkGatewayName $gateway.Name -ResourceGroupName $resourcegroupname -PublicCertData $Base64RootCert
 ```
+
+Ok, almost there.  So now we have a configured vpn gateway on the azure side, ready to take a connection from our local machine, complete with certificate authentication.  We just need to download and install the VPN client software.  Luckily we can do that from azure too, amazing!  Again, you can either setup the AzureRM module on your gateway machine, or run the below on your host, then copy it over manually.
+
+```Powershell
+$clientURL = new-azurermvpnclientconfiguration -ResourceGroupName $resourcegroupname -Name $gateway.name -AuthenticationMethod EAPTLS | select-object -expandproperty vpnprofilesasurl
+Invoke-WebRequest -Uri $clientURL -OutFile "$env:temp\VPNPackage.zip"
+
+#after downloading the file, copy it over to the gateway machine
+#the below command will need to be run from an administrative powershell session
+Copy-VMFile -VM $(get-vm -name vpngateway) -SourcePath "$env:temp\VPNPackage.zip" -DestinationPath c:\temp\VPNPackage.zip -FileSource Host -Force -CreateFullPath
+```
+
+Now we need to go over to our gateway machine, extract the file, and install the VPN package
+
+```powershell
+#expand config file and create vpn connection
+Expand-Archive -Path c:\temp\vpnpackage.zip -DestinationPath c:\temp\vpnpackage
+C:\temp\vpnpackage\WindowsAmd64\VpnClientSetupAmd64.exe
+```
+
+Select yes when prompted for installation, then you should be all set.  Click on network icon in the system tray and you should see something like this:
+
+![VPN Client Installed](/images/AzureLabVPN.png)
+
+Click on 'vnet1' to open the settings menu.  Select vnet1 again and click on the connect button to bring up the VPN connection menu. yep, click connect _again_ to connect to the vpn.
+
+![VPN Client connection](/images/AzureLabVPNconnect.png)
+
+A bunch of stuff should print out in that little status window thing and you should be connected.  If you click on the network menu in the systray again it should look like this now:
+
+![VPN client connected](/images/AzureLabVPNConnected.png)
+
+Success! Now if we look at the routing table we should see a route for our azure vnet (10.0.0.0/16) pointing to our vpn network connection (172.16.201.3)
+
+![VPN client routing table](/images/AzureLabVPNRouteTable.png)
+
+Ok that's enough for one day.  Next up we'll see about sharing this connection with the rest of the VMs on our hyper-v 'internal' network, and see what other trouble we can get into with that.
