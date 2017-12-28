@@ -2,7 +2,6 @@
 layout: post
 title: Multi-Purpose Azure Lab
 ---
-
 # Lab Lab Lab!
 
 Ah Christmas, what a magical time of year to be in the office.  Nope, not ironic, it's really the best.  While everyone else is spending their vacation time to get away from the work, ringing phones, bad traffic, etc., I just get it all for free when everyone leaves.  There's nothing quite like a quick commute and a nice quiet office to put me in the holiday spirit.  Especially the last week of the year, that's got to be the filet mignon of work weeks.  Of course it's no good to just sit around surfing the youtubes, this magical week is best when you have a nice juicy project to occupy yourself with.  Planning that free time project can be more fun than planning a vacation.  And you get paid for it!  So what's it going to be this week?  Well how about something Azure?  And to really get a bang for the buck let's do a few things at once.  Hmm, I've got this new laptop with Hyper-V setup, maybe I could build a few VMs, a "domain", and run through the gamut of azure hybrid-cloud scenarios.  Let's see, we can start with a nice [Site to Site VPN Gateway](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-site-to-site-resource-manager-portal) to connect these VMs to Azure, then follow that with a serving of [Azure Site Recovery](https://docs.microsoft.com/en-us/azure/site-recovery/tutorial-migrate-on-premises-to-azure) to see about running those local VMs up in the cloud.  And if we still have room let's see about creating an [Azure AD tenant and syncing users](https://docs.microsoft.com/en-us/azure/active-directory/connect/active-directory-aadconnect) from our local "domain".  See?  It's totally the filet mignon of work weeks.  So let's get to it!
@@ -59,3 +58,44 @@ restart-service dhcpserver
 > Note: we don't set the router option as we don't currently have any routing going on.  More on that later when we setup our vpn gateway.
 
 Now we have DNS, DHCP and a domain.  All the comforts of home.  Just need to go through and setup our remaining servers and we'll have ourselves a nice little lab. At this point I'm going to 
+
+# More Setup
+
+Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the Powershell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) for more info on these commands.
+
+```Powershell
+$resourcegroupname = 'AzurelabRG2'
+$location = 'SouthCentralUS'
+New-AzureRMResourceGroup -name $resourcegroupname -location $location
+$vnet1 = New-AzureRMVirtualNetwork -name vnet1 -resourcegroupname $resourcegroupname -location $location -AddressPrefix 10.0.0.0/16
+Add-AzureRMVirtualNetworkSubnetConfig -name subnet1 -virtualnetwork $vnet1 -addressprefix 10.0.0.0/24
+Set-AzureRMVirtualNetwork -VirtualNetwork $vnet1
+```
+
+[![Launch Cloud Shell](https://shell.azure.com/images/launchcloudshell.png "This is so cool!")](https://shell.azure.com/powershell) 
+
+Now that we have a network in the cloud and a network in our laptop we just need to connect those two.  We're going to setup a VPN gateway in azure, and use certificate authentication to connect our local "gateway" VM.  We're going to follow the steps in this [article](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-resource-manager-portal) and see what happens.
+
+After that things are going to get weird.  We're going to try to enable routing on our gateway vm, and see if we can share out that VPN connection to all the other VMs on our 'internal' network.  No idea if that works, but in theory it should.
+
+Step 1, create a VPN Gateway for our new vnet via the portal.  There's probably a powershell way to do that but we'll figure that out later.  The portal says this could take a while so while that's churning along we'll switch over to our Hyper-V machine, and connect to our gateway VM.  From here we'll create and export our certificates.
+
+```Powershell
+#create a root certificate
+$rootcert = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
+-Subject "CN=P2SRootCert" -KeyExportPolicy Exportable `
+-HashAlgorithm sha256 -KeyLength 2048 `
+-CertStoreLocation "Cert:\CurrentUser\My" -KeyUsageProperty Sign -KeyUsage CertSign
+#create a client certificate signed by the above root certificate
+New-SelfSignedCertificate -Type Custom -KeySpec Signature `
+-Subject "CN=P2SChildCert" -KeyExportPolicy Exportable `
+-HashAlgorithm sha256 -KeyLength 2048 `
+-CertStoreLocation "Cert:\CurrentUser\My" `
+-Signer $rootcert -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2")
+#export the root certificate to upload to Azure
+$Base64RootCert = [convert]::tobase64string($rootcert.RawData)
+$Gateway = get-azurermvirtualnetworkgateway -resourcegroupname $ResourceGroupName
+Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientRootCertificates $Base64RootCert -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol IkeV2,SSTP
+
+
+```
