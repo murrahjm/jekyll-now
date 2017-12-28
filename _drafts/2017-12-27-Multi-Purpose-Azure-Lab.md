@@ -64,7 +64,7 @@ Now we have DNS, DHCP and a domain.  All the comforts of home.  Just need to go 
 Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the Powershell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) for more info on these commands.
 
 ```Powershell
-$resourcegroupname = 'AzurelabRG2'
+$resourcegroupname = 'AzurelabRG'
 $location = 'SouthCentralUS'
 New-AzureRMResourceGroup -name $resourcegroupname -location $location
 $vnet1 = New-AzureRMVirtualNetwork -name vnet1 -resourcegroupname $resourcegroupname -location $location -AddressPrefix 10.0.0.0/16
@@ -78,7 +78,7 @@ Now that we have a network in the cloud and a network in our laptop we just need
 
 After that things are going to get weird.  We're going to try to enable routing on our gateway vm, and see if we can share out that VPN connection to all the other VMs on our 'internal' network.  No idea if that works, but in theory it should.
 
-Step 1, create a VPN Gateway for our new vnet via the portal.  There's probably a powershell way to do that but we'll figure that out later.  The portal says this could take a while so while that's churning along we'll switch over to our Hyper-V machine, and connect to our gateway VM.  From here we'll create and export our certificates.
+Step 1, create a VPN Gateway for our new vnet via the portal.  There's probably a powershell way to do that but we'll figure that out later.  The portal says this could take a while so while that's churning along we'll switch over to our Hyper-V machine, and connect to our gateway VM.  From here we'll create and export our certificates.  You have a couple of options here.  You can install the AzureRM module on your vpn gateway machine and run all the commands on that machine, or you can run the cert commands on the vpngateway through invoke-command up to retreiving the certificate data, then run the azure stuff from the host. Either way should work.
 
 ```Powershell
 #create a root certificate
@@ -92,10 +92,13 @@ New-SelfSignedCertificate -Type Custom -KeySpec Signature `
 -HashAlgorithm sha256 -KeyLength 2048 `
 -CertStoreLocation "Cert:\CurrentUser\My" `
 -Signer $rootcert -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2")
-#export the root certificate to upload to Azure
+#convert the root certificate to upload to Azure
 $Base64RootCert = [convert]::tobase64string($rootcert.RawData)
+```
+
+```Powershell
+#Login to Azure if you haven't already
 $Gateway = get-azurermvirtualnetworkgateway -resourcegroupname $ResourceGroupName
-Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientRootCertificates $Base64RootCert -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol IkeV2,SSTP
-
-
+Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol IkeV2,SSTP
+Add-AzureRmVpnClientRootCertificate -VpnClientRootCertificateName P2SRootCert -VirtualNetworkGatewayName $gateway.Name -ResourceGroupName $resourcegroupname -PublicCertData $Base64RootCert
 ```
