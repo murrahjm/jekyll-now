@@ -4,7 +4,7 @@ You can't go anywhere these days without reading about devops, configuration as 
 
 This post will cover one example of using source control and a release pipeline to go from a folder full of powershell scripts to a central repository with published powershell modules.  Even without any fancy devops-ian practices this is a good practice for anyone who has a collection of functions they are looking to share with their coworkers.  Add in the magic sauce and you get a repeatable, automatic process that keeps you in the coding game and out of the moving-files-around game.
 
-##Step 1: Source Control
+## Step 1: Source Control
 
 * myscript.ps1
 * myscript.bak
@@ -18,7 +18,7 @@ There's some sort of immutable law of humans that the only effective way to make
 
 A source control system is that easiest path.  You put everything in one central location on your local drive because it's easy.  You add a commit message whenever you save a change because you have to.  You sync those changes up to the server because that's the only way to kick-off the automated deployment, which is way easier than a manual deployment.  Source control isn't awesome because it's the thing you should be using, it's awesome because it's the thing you want to use.  The thing that makes everything easier.  So let's take a look already!
 
-###GIT
+### GIT
 
 There are a few different source control systems out there, but GIT seems to be the most popular at the moment.  And it's what github uses, and we should all be putting code out on github and contributing to the community and all that right?  Ok so here's the world's shortest git demo.  [Github](https://try.github.io) has a pretty good git tutorial and there are tons of other resources out there as well.
 
