@@ -15,7 +15,7 @@ The first thing to do is build our local resources.  We've got Hyper-V installed
 * __member server__ - not sure what we'll do with this one but it seems like we should have something non-specific that we can use later.  Plus it's a good way to test out domain membership and DHCP functionality
 * __linux server__ - again, not sure what I'm going to do with it, but it'll probably come in handy. [Microsoft loves linux](https://blogs.technet.microsoft.com/windowsserver/2015/05/06/microsoft-loves-linux/) so I guess I should too.  Not domain joined but is on DHCP.
 * __win10 member workstation__ - ?? why not?  another domain member
-* __VPN Gateway__ - this will be the local endpoint of our Azure site to site connection.  In Hyper-V it should sit on the internal and external networks
+* __VPN Gateway__ - this will be the local endpoint of our Azure site to site connection.  In Hyper-V it should sit on the internal and external networks. Note:  This can't be server core, as the VPN client doesn't seem to work with core.  Put a GUI on this one.
 
 So this layout should look something like this:
 
@@ -61,7 +61,7 @@ Now we have DNS, DHCP and a domain.  All the comforts of home.  Just need to go 
 
 # More Setup
 
-Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the Powershell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) for more info on these commands.
+Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the Powershell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) with all the details.
 
 ```Powershell
 $resourcegroupname = 'AzurelabRG'
@@ -124,6 +124,7 @@ Expand-Archive -Path c:\temp\vpnpackage.zip -DestinationPath c:\temp\vpnpackage 
 C:\temp\vpnpackage\WindowsAmd64\VpnClientSetupAmd64.exe
 ```
 
+And here we reach the end of our powershell commands, the rest of this we have to do through the GUI. (you did build the gateway machine with a GUI right?)
 Select yes when prompted for installation, then you should be all set.  Click on network icon in the system tray and you should see something like this:
 
 ![VPN Client Installed](/images/AzureLabVPN.png)
