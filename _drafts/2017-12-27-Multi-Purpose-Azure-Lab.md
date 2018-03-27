@@ -90,7 +90,7 @@ $rootcert = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
 New-SelfSignedCertificate -Type Custom -KeySpec Signature `
 -Subject "CN=P2SChildCert" -KeyExportPolicy Exportable `
 -HashAlgorithm sha256 -KeyLength 2048 `
--CertStoreLocation "Cert:\CurrentUser\My" `
+-CertStoreLocation "Cert:\LocalMachine\My" `
 -Signer $rootcert -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2")
 #convert the root certificate to upload to Azure
 $Base64RootCert = [convert]::tobase64string($rootcert.RawData)
@@ -101,7 +101,7 @@ $Base64RootCert = [convert]::tobase64string($rootcert.RawData)
 #if you run this from a different machine than the gateway, you really only need the
 #base64rootcert variable from the above code block
 $Gateway = get-azurermvirtualnetworkgateway -resourcegroupname $ResourceGroupName
-Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol SSTP
+Set-AzureRmVirtualNetworkGateway -VirtualNetworkGateway $gateway -VpnClientAddressPool 172.16.201.0/24 -VpnClientProtocol SSTP,L2TP
 Add-AzureRmVpnClientRootCertificate -VpnClientRootCertificateName P2SRootCert -VirtualNetworkGatewayName $gateway.Name -ResourceGroupName $resourcegroupname -PublicCertData $Base64RootCert
 ```
 
@@ -120,7 +120,7 @@ Now we need to go over to our gateway machine, extract the file, and install the
 
 ```powershell
 #expand config file and create vpn connection
-Expand-Archive -Path c:\temp\vpnpackage.zip -DestinationPath c:\temp\vpnpackage
+Expand-Archive -Path c:\temp\vpnpackage.zip -DestinationPath c:\temp\vpnpackage -force
 C:\temp\vpnpackage\WindowsAmd64\VpnClientSetupAmd64.exe
 ```
 
