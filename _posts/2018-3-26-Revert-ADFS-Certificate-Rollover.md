@@ -13,25 +13,25 @@ Or maybe not!  If you have found yourself in the above, totally fictional, not a
 
 If you open your ADFS Management Console, you can naviate to the certificates page and see something like this:
 
-![ADFS Certificates](../images/ADFSCertificateRollover/singlecerts.png)
+![ADFS Certificates](../images/ADFSCertificateRollover/singlecerts.PNG)
 
 This is what you will see most times of the year, when your certificates are valid and not nearing expiration.  In this example, once next March nears, you'll see something like this:
 
-![ADFS Certificates](../images/ADFSCertificateRollover/newcertssecondary.png)
+![ADFS Certificates](../images/ADFSCertificateRollover/newcertssecondary.PNG)
 
 This is what you'll see if your 'Primary' certificates are nearing expiration.  ADFS has taken the liberty to create new certificates and mark them as 'Secondary'.  If we pretend that today's date is 2/27/2019, we'll see that we have about a month until our primary certificates expire.  We have our new certificates already created and ready to go, however.  In addition to creating these certificates for us, ADFS is even kind enough to tell us about it in the ADFS Event log.  I mean, you're watching your ADFS event log for important informational messages all the time right?  Yeah of course, we all are.  But in case you missed this one here's what it looks like.
 
-![A totally not obscure event log entry](../images/ADFSCertificateRollover/NewCertEvent.png)  The new certificates show up in our federation metadata as well, which we can browse to and verify.
+![A totally not obscure event log entry](../images/ADFSCertificateRollover/NewCertEvent.PNG)  The new certificates show up in our federation metadata as well, which we can browse to and verify.
 
-![ADFS Metadata](../images/ADFSCertificateRollover/metadatatwocerts.png)
+![ADFS Metadata](../images/ADFSCertificateRollover/metadatatwocerts.PNG)
 
 You can see among all the XML, two certificates with a KeyDescriptor use of "signing".  So those are our two certs, and the fact that they're in the metadata means that any relying parties that are configured to update themselves from this metadata URL can pull in the new certificates automagically.  In fact, many commonly used applications that you might federate with fully support this automatic certificate rollover, so you may not even notice this is happening.  That's probably why there are so few articles about this online (Or my google-fu is just bad).
 
 Anyway, in our scenario our relying parties do not automagically anything, so let's continue with our process.  Let's fast forward our time machine precisely 5 days, upon which ADFS will decide to swap our primary and secondary slots.  If we refresh our ADFS management console we will now see the new certificates listed as Primary.  We can also see another totally obvious event log entry.
 
-![Certificate Swap](../images/ADFSCertificateRollover/CertSwap.png)
+![Certificate Swap](../images/ADFSCertificateRollover/CertSwap.PNG)
 
-![Certificate Swap event](../images/ADFSCertificateRollover/CertSwapevent.png)
+![Certificate Swap event](../images/ADFSCertificateRollover/CertSwapevent.PNG)
 
 Our swap is done with 3 weeks to spare before the old certificates expire.  Plenty of time to fix any issues before it's too late.  So what happens next?  Well let's fast forward in our time machine one more time, to March 27th, 2019.  This will be one day after our old certificates expire.  To the future!
 
@@ -39,8 +39,8 @@ Our swap is done with 3 weeks to spare before the old certificates expire.  Plen
 
 OMG what happened?!?  We were only gone 3 weeks!  Ok just kidding, it shouldn't be as bad as all that.  Hopefully all you'll see is this event log entry and that the old, expired certificates have been removed.
 
-![Certificates removed](../images/ADFSCertificateRollover/OldCertsRemoved.png)
-![Certificates removed event](../images/ADFSCertificateRollover/OldCertsRemovedEvent.png)
+![Certificates removed](../images/ADFSCertificateRollover/OldCertsRemoved.PNG)
+![Certificates removed event](../images/ADFSCertificateRollover/OldCertsRemovedEvent.PNG)
 
 And that's pretty much it.  All automatic and if all your relying parties support it, extremely seamless.  That process will happen yearly and no one needs to be the wiser.  Now if your environment does look like the above fiery hell, continue reading to find out your options for recovery.
 
@@ -55,7 +55,7 @@ __Note__:
 
 Our rapid, short term resolution plan is basically to swap the secondary certificates back into the primary slot.  That's the one the applications are trusting, so that's the one that they want to see.  We can update the apps with the new certificate later, but right now we want them talking again.  Maybe you've opened up your ADFS management console and see something like this:
 
-![Why are you grey!?](../images/ADFSCertificateRollover/CannotSetPrimary.png)
+![Why are you grey!?](../images/ADFSCertificateRollover/CannotSetPrimary.PNG)
 You cannot manually select the primary certificate because auto-rollover is enabled.  This must be disabled before you can fix it.  Like most things, the best way to do this is with Powershell.  Open a remote session to your primary ADFS server and run the following:
 
 ``` powershell
