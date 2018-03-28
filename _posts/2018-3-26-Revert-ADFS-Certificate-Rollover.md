@@ -65,7 +65,7 @@ Set-ADFSProperties -AutoCertificateRollover $False
 $TokenSigningSecondary = Get-AdfsCertificate -CertificateType Token-Signing | where-object{$_.IsPrimary -eq $False}
 $TokenDecryptingSecondary = Get-AdfsCertificate -CertificateType Token-Decrypting | where-object{$_.IsPrimary -eq $False}
 #Now set the above secondary certificates to Primary
-Set-AdfsCertificate -Thumbprint $TokenSigningSecondary.Thumbprint -IsPrimary -CertificateType Tozken-Signing
+Set-AdfsCertificate -Thumbprint $TokenSigningSecondary.Thumbprint -IsPrimary -CertificateType Token-Signing
 Set-AdfsCertificate -Thumbprint $TokenDecryptingSecondary.Thumbprint -IsPrimary -CertificateType Token-Decrypting
 ```
 
