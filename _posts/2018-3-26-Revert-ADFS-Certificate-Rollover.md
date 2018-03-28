@@ -2,16 +2,13 @@
 layout: post
 title: Revert ADFS Certificate Rollover
 ---
-
-# Prologue
-
 INT. HOME IN BED - MIDNIGHT
 
 The phone rings suddenly, waking the Sysadmin from his peaceful slumber.  He wakes immediately and answers the phone quietly and with a measured gravity that can only come from decades of practice.  "This is Steve" he says.  It's the NOC.  Of course it is.  "We think there's something wrong with ADFS" the slightly panicked engineer squeeks.  "We can't get to all these apps, we get a certificate error and authentication failed!"  Shit.  The Sysadmin looks at his calendar, thinking back to about this time last year.  Shit.  The ADFS token signing certificates probably rolled over again without us noticing. "I'm logging in now, give me 5 minutes".  The sysadmin grinds his teeth as he fires up his laptop.  It's going to be a long night.
 
 /scene
 
-# History
+# AutoCertificateRollover
 Or maybe not!  Ok so if you have found yourself in the above, totally fictional, not at all based on my own experiences, situation, you might be slightly panicked as well.  So what's going on here?  Well let's talk about that, but first, if you're in the above emergency right now, you probably don't care why.  [Go to the next section](#FixitNowMaketheBleedingStop!) on how to fix it, then come back and read this part at your leisure.
 
 If you open your ADFS Management Console, you can naviate to the certificates page and see something like this:
