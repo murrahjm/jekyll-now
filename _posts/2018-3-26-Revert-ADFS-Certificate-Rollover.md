@@ -9,7 +9,7 @@ The phone rings suddenly, waking the Sysadmin from his peaceful slumber.  He wak
 /scene
 
 # AutoCertificateRollover
-Or maybe not!  If you have found yourself in the above, totally fictional, not at all based on my own experiences, situation, you might have been slightly panicked as well.  So what's going on here?  Well let's talk about that, but first, if you're in the above emergency right now, you probably don't care why.  [Go to the next section](#FixitNowMaketheBleedingStop!) on how to fix it, then come back and read this part at your leisure.
+Or maybe not!  If you have found yourself in the above, totally fictional, not at all based on my own experiences, situation, you might have been slightly panicked as well.  So what's going on here?  Well let's talk about that, but first, if you're in the above emergency right now, you probably don't care why.  [Go to the next section](#fix-it-now-make-the-bleeding-stop!) on how to fix it, then come back and read this part at your leisure.
 
 If you open your ADFS Management Console, you can naviate to the certificates page and see something like this:
 
