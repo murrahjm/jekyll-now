@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fun With Windows Firewall
+featured-img: WindowsFirewall/Header
 ---
 So I did this thing a while back, and it turned out to be surprisingly useful despite it being an imperfect solution.  But I guess if it improves productivity and repeatability it can't be all bad.  So I thought I'd share, plus it gives me something to write about.  Gotta keep those fingers busy!  Anyway, there are a couple of neat, Powershell-y things in these cmdlets that make them work really well together.
 
@@ -42,7 +43,7 @@ And last but not least is a small function that started as a one-off little scri
 
 And that's about it, a relatively useful set of tools that ended up saving a pretty rediculous amount of time over the equivalent manual processes.  So let me just wrap this part up by talking about the development flow here.  Notice how I separated the commands into those three groups, loosely based on creation time.  The thing with projects like these is that it should never really be "done".  It's like a cycle of improvement.  So you identify a need, create a tool to fit that need, start using the tool, and evaluate again for new needs.  New problems may present themselves because of the process change associated with the use of the new tools.  So you circle back after you're "done", and do the same thing; identify a need, create a tool to fit that need.  And just keep doing that, modifying and tweaking here and there until you're all out of needs and everyone is happy and management starts throwing buckets of money at you and gives you a corner office and your own parking space, and...ok well maybe not all that but you get the idea.  And lest you, dear reader, think of me as some sort of process genius, I totally didn't come up with this idea.  On the Internets it appears to be referred to as the *Continuous Improvement Cycle*, and is illustrated by this powerpoint-worthy diagram:
 
-[![Just keep turning](/images/Continuous_improvement_compressed@2x.jpg)](https://leankit.com/learn/kanban/continuous-improvement/)
+[![Just keep turning](/assets/img/posts/Continuous_improvement_compressed@2x.jpg)](https://leankit.com/learn/kanban/continuous-improvement/)
 
 So this ended up being pretty big in its own right so let's break here and do a "Part 2" to start going over the details of the various commands.
 

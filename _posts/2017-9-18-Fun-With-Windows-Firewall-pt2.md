@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fun With Windows Firewall pt. 2
+featured-img: WindowsFirewall/Header
 ---
 
 This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](/Fun-With-Windows-Firewall).
@@ -12,11 +13,11 @@ TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/W
 
 The goal of this cmdlet is pretty straight forward:  turn this painful wall of text:
 
-![firewall.log](/images/firewallLogtext.png)
+![firewall.log](/assets/img/posts/firewallLogtext.png)
 
 Into sweet object-oriented goodness:
 
-![objects!](/images/firewalllogPS.png)
+![objects!](/assets/img/posts/firewalllogPS.png)
 
 ## ConvertFrom-String
 
@@ -69,11 +70,11 @@ So that's pretty cool, but what happens when we get to the second line?  We're g
 
 Now we could stop there and have a pretty cool thing, but lets take it a small step further for better functionality.  Ideally we would have a cmdlet that will take just a computer name and a credential object and return the firewall log data.  So to do that we need a way to get the firewall log from the remote machine for processing.  Paging [Invoke-Command](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-5.1), you have a call on line 1.  PS remoting is generally pretty firewall friendly, and we have a computer name and credential object so it should be a trivial thing to run a get-content and pull the file contents over the remote session.
 
-![waiting for paint to dry](/images/Get-FirewallLog-WSMAN.png)
+![waiting for paint to dry](/assets/img/posts/Get-FirewallLog-WSMAN.png)
 
 Wow is that the slowest thing ever or what!?  So ok maybe we should use SMB to just get the whole file locally and process it rather than waiting minutes retrieving the content.
 
-![much better](/images/Get-FirewallLog-SMB.png )
+![much better](/assets/img/posts/Get-FirewallLog-SMB.png )
 
 But SMB doesn't always work across various connections and firewalls and stuff, so let's have both.  We'll try SMB first, if that doesn't work we'll resort to the slower Invoke-command.  And for grins lets also make the connection method a user selectable parameter.
 

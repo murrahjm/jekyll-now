@@ -4,9 +4,10 @@ title: About
 permalink: /about/
 ---
 
-Jeremy is an old OPS guy from the dark ages of computing.  He started automating NT 4.0 installations and hasn't looked back.  Classically trained as an Active Directory Administrator and Windows Server Engineer, he is currently engrossed in all things Powershell and is eagerly awaiting the death of the GUI.  He also thinks writing bios in the third person is weird.
+Sleek is a modern Jekyll theme focused on speed performance & SEO best practices. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/) or simply read the guide on how to [get started](/getting-started)
 
+You can find the source code for the Jekyll new theme at:
+[sleek](https://github.com/janczizikow/sleek)
 
-### Contact me
-
-[murrahjm@gmail.com](mailto:murrahjm@gmail.com)
+You can find the source code for Jekyll at
+[jekyll](https://github.com/jekyll/jekyll)

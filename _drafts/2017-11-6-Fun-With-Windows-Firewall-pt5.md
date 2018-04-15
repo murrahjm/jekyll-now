@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fun With Windows Firewall pt. 5
+featured-img: WindowsFirewall/Header
 ---
 
 This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](/Fun-With-Windows-Firewall).
