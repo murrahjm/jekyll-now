@@ -4,10 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Sleek is a modern Jekyll theme focused on speed performance & SEO best practices. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/) or simply read the guide on how to [get started](/getting-started)
-
-You can find the source code for the Jekyll new theme at:
-[sleek](https://github.com/janczizikow/sleek)
-
-You can find the source code for Jekyll at
-[jekyll](https://github.com/jekyll/jekyll)
+Jeremy Murrah is an old OPS guy from the dark ages of computing. He started automating NT 4.0 installations and hasn't looked back. Classically trained as an Active Directory Administrator and Windows Engineer, he is currently engrossed in all things Powershell and is eagerly awaiting the death of the GUI. 
