@@ -9,6 +9,7 @@ The phone rings suddenly, waking the Sysadmin from his peaceful slumber.  He wak
 /scene
 
 # AutoCertificateRollover
+
 Or maybe not!  If you have found yourself in the above, totally fictional, not at all based on my own experiences, situation, you might have been slightly panicked as well.  So what's going on here?  Well let's talk about that, but first, if you're in the above emergency right now, you probably don't care why.  [Go to the next section](#fix-it-now-make-the-bleeding-stop) on how to fix it, then come back and read this part at your leisure.
 
 If you open your ADFS Management Console, you can naviate to the certificates page and see something like this:
@@ -48,6 +49,7 @@ And that's pretty much it.  All automatic and if all your relying parties suppor
 I'll assume you are reading this with your boss and his boss and maybe his boss over your shoulder wanting to know when this will be fixed, so I'll be brief.  There are two scenarios you might find yourself in.  Your recovery can vary drastically depending on which one you are experiencing.
 
 ## Scenario 1: Automatic Certificate Rollover
+
 Your ADFS server created new token-signing and token-decrypting certificates 5 or so days ago, and has now decided to swap these new certificates into the "primary" role.  The "old" certificates are now in the "secondary" role, but still valid for a few more weeks.  Any applications that don't support the use of secondary certificates are now failing authentication.  
 
 __Note__:
