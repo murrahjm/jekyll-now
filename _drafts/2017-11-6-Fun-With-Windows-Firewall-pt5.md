@@ -8,9 +8,9 @@ This post is part of a series of posts outlining a handful of windows firewall m
 
 TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/WindowsFirewallcommands)
 
-# Compare-FirewallRules
+# Add-ServiceFirewallRules
 
-# Copy-FirewallRules
+# Get-ExecutableByPort
 
 ## Firewall Cmdlets index
 
