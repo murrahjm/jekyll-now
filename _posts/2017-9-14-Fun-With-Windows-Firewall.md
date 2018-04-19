@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Fun With Windows Firewall
-featured-img: WindowsFirewall/Header
+featured-img: windowsfirewall
 ---
 So I did this thing a while back, and it turned out to be surprisingly useful despite it being an imperfect solution.  But I guess if it improves productivity and repeatability it can't be all bad.  So I thought I'd share, plus it gives me something to write about.  Gotta keep those fingers busy!  Anyway, there are a couple of neat, Powershell-y things in these cmdlets that make them work really well together.
 
