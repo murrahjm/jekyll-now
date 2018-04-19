@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Powershell Summit
+featured-img: Powershell
 ---
 
 I could write a book about Powershell Summit, and that's just from the first day.  Both the breadth and depth of innovation in this space is staggering.  But I don't want to talk about Powershell.  Because it isn't really about Powershell.  Powershell is an amazing tool that can enable any number of things, and accelerate everything else.  But it isn't really about Powershell.
