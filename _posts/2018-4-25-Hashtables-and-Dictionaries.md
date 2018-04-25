@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hash tables and Dictionaries
+title: Hash Tables and Dictionaries
 featured-img: Powershell
 ---
 
