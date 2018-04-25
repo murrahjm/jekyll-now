@@ -126,6 +126,11 @@ Key Value
 two     2
 ```
 
+__Note__:
+> $PSBoundParameters is not the only dictionary type, there are plenty of others.  You can test this out with a generic dictionary type by using:
+>
+> ```$var = New-Object 'System.Collections.Generic.Dictionary[String,String]'```
+
 # Conclusion
 
 One of the strengths of PowerShell is that it makes it easy to do a lot of great things without having to really know much about data types.  Most of the time they don't matter.  But some of the time they do, and being aware of them can make your code better and potentially save you some heart ache.
