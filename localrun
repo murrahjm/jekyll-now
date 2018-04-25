@@ -1,0 +1,1 @@
+jekyll serve -w --force_polling -D -H 192.168.1.19
