@@ -1,19 +1,19 @@
 ---
 layout: post
-title: Hashtables and Dictionaries
+title: Hash tables and Dictionaries
 featured-img: Powershell
 ---
 
-# When is a Hashtable not a Hashtable
+# When is a Hash Table not a Hash Table
 
 When it's ~~ajar~~ a dictionary!  It would seem that today is data type week, stuff like this keeps coming up.  I was just reading about arrays vs lists and then ran into this issue with hashtables and dictionaries.  There must be something in the water.  Anyway, since this resulted in hours of confusion for a simple misunderstanding, and since I'm just as likely to make this same mistake 6 months from now, it seemed like the kind of thing I should write down.
 
-## What is a hashtable?
+## What is a Hash Table?
 
-[about_hash_tables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-6) defines a hashtable as "a compact data structure that stores one or more key/value pairs" and says "...also known as a dictionary..."  Basically it looks like this:
+[about_hash_tables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-6) defines a hash table as "a compact data structure that stores one or more key/value pairs" and says "...also known as a dictionary..."  Basically it looks like this:
 
 ```Powershell
-@{one='one';two='two'}
+@{one=1;two=2}
 
 Name                           Value
 ----                           -----
@@ -50,7 +50,16 @@ OverloadDefinitions
 void Remove(System.Object key)
 void IDictionary.Remove(System.Object key)
 ```
-## What is a dictionary?
+
+If you look at get-member you see we clearly have a hashtable
+
+```powershell
+$hashtable | gm
+
+   TypeName: System.Collections.Hashtable
+```
+
+## What is a Dictionary?
 
 So that all seems pretty straight forward.  But then, what is a dictionary?  Well that depends.  Let's look at one example, say `$PSBoundParameters`.  If you're not familiar, `$PSBoundParameters` is an automatic variable that is populated inside a running script or function, and contains the names and values of any specified parameters.  It's a great way to determine if a user provided a value to a parameter at run time.  It only exists inside the running script or function, so it's tricky to catch, but if we use a debugger or if we just output the contents, we can see something like this:
 
@@ -90,7 +99,7 @@ $output | gm
 ...
 ```
 
-Yep, that all looks like what we'd expect, nothing funny going on.  That is totally a hashtab... wait what is that type?!  PSBoundParametersDictionary?  Weird, well a hashtable is a dictionary right, so maybe a dictionary is like a hashtable?  Let's check a few of those methods we used with our hashtable, maybe it's more or less the same thing
+Yep, that all looks like what we'd expect, nothing funny going on.  That is totally a hashtab... wait what is that type?!  PSBoundParametersDictionary?  Weird, well a hash table is a dictionary right, so maybe a dictionary is like a hash table?  Let's check a few of those methods we used with our hash table, maybe it's more or less the same thing
 
 ```Powershell
 $output.add
