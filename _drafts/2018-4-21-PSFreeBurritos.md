@@ -72,9 +72,62 @@ And that should do it!  Now let's write some code!
 Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in Powershell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1)!
 
 ```Powershell
+$url = 'https://www.chipotlefeedback.com'
+#initial connection and retreive first formdata
+$webrequest = invoke-webrequest $url -SessionVariable websession
+#form data is here:
+$webform = $webrequest.forms[0]
+$webform | format-list
 
+Id     : surveyform
+Method : post
+Action : /?feedless-chipotle-rcpt-survey-61c7f7b3df122d691ee3e0ea094ee51d
+Fields : {[stay_main-pager, 0], [nodeId, survey5], [ballotVer, 2], [hmac, ]...}
 ```
 
+The two things we care about up there are the *Action* and the *Fields*.  The *Action* property is what we'll append to our initial URL to make sure we go to the same form every time.  The *Fields* property is of course our form data, so let's look at that one.
+
+```PowerShell
+$webform.fields
+
+Key                                              Value
+---                                              -----
+stay_main-pager                                  0
+nodeId                                           survey5
+ballotVer                                        2
+hmac
+is_embedded                                      false
+defPgrAction                                     next
+i_onf_q_chipotle_survey_invitation_method_alt_10 10
+spl_q_chipotle_receipt_code_txt
+i_onf_q_chipotle_survey_invitation_method_alt_20 20
+beginButton                                      Begin Survey
+```
+Ok that's alot of stuff, but what we care about here is the `spl_q_chipotle_receipt_code_txt`, `nodeID` and `ballotVer`  Most of the other stuff we'll just keep in there.  Oh, so interesting thing with `i_onf_q_chipotle_survey_invitation_method_alt_10` and `i_onf_q_chipotle_survey_invitation_method_alt_20`, those are actually the radio buttons.  To *select* a particular button we just include the root key name (the name above with the _10 or _20 part) and then use the value for the button we want (10 or 20).  We'll see that again in later pages as well.  No idea if that's a common way to do radio buttons, but it's pretty consistent here.  Not a huge complexity, but it helps to eat a few more burritos to have plenty of sample data.  Well, *help* is a strong word but it couldn't possibly hurt.
+
+Where was I?  Oh right, `nodeID` and `ballotVer`.  So `nodeID` appears to be a session-like thing.  It sometimes differs between surveys but doesn't appear to differ between individual form submissions.  `ballotVer` is a little different.  At first glance it just looks like a page number or something, incrementing each time.  But upon closer inspection it appears to skip a value every now and again.  That's weird, so we'll just grab it from the return object and apply that value to the next form data.
+
+So armed with all that good info we're ready to start submitting form data.
+
+```Powershell
+#get these initial values
+$nodeID = $webform.fields.nodeId
+$nextBallotVer = $webform.fields.ballotVer
+#$formdata is our imported json data, converted to a PSObject because PowerShell is like that
+foreach ($item in $formdata){
+    #update nodeID field
+    $item.nodeId = $nodeID
+    #set current ballotVer to the value specified by the previous return
+    $item.ballotVer = $nextBallotVer
+    #PSObjects are cool but we need a hashtable for Invoke-WebRequest
+    #so we use some function I found on the web, IDK
+    $hashtable = $item | ConvertPSObjectToHashtable
+    #submit form data
+    $return = invoke-webrequest -uri "$url$($WebForm.action)" -Method POST -Body $hashtable -WebSession $websession
+    #write the returned ballotVer value to retreive the next time around
+    $nextBallotVer = $return.forms[0].fields.ballotVer
+}
+```
 # Finding Errors and Debugging
 
 # The Survey
