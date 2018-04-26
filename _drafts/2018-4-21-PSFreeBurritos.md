@@ -69,8 +69,14 @@ And that should do it!  Now let's write some code!
 
 # Invoke-WebRequest
 
-# The Survey
+Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in Powershell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1)!
+
+```Powershell
+
+```
 
 # Finding Errors and Debugging
+
+# The Survey
 
 # Profit!
