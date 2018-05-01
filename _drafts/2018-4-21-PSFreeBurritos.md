@@ -148,14 +148,18 @@ Ok, so now that you know ~~kung fu~~ debugging, let's get to it!
 We'll test our invalid receipt code scenario first.  Let's do three things first:
 
 * Set a break point right below this line in our main function:
+
 ```powershell
 $return = invoke-webrequest -uri "$url$($WebForm.action)" -Method POST -Body $hashtable -WebSession $websession
 ```
+
 * open up a new powershell script file to help launch our debugger:
+
 ```powershell
 . .\get-freeburritos.ps1
 get-FreeBurritos -ReceiptCode 00000000000000000000 -answerfile .\sampleformdata.json
 ```
+
 * Open fiddler and set it to start capturing so we can gather the web data as we hit our break point
 
 ![debugger breakpoint](/assets/img/posts/PSFreeBurritos/debug1.png)
@@ -170,7 +174,7 @@ There's a ton of data there but let's see if we can get lucky.  Let's search for
 
 Wow we found something!  `error-block readable-text` that sounds like an error message.  Ok now that we have that element, let's go over to our debugger and see if we can find that section.  We have the $return variable that should be populated with all this data, so we can just browse that like so:
 
-![navigating return variable](/assets/img/posts/PSFreeBurritos/debug4.gif)
+[![navigating return variable](/assets/img/posts/PSFreeBurritos/debug4.png)](/assets/img/posts/PSFreeBurritos/debug4.gif)
 
 Look at all that data!  That message is really buried under there.  But that's ok, we've found it so we know what to look for now.  Cleaning up our request we can do something like this now in our script:
 
@@ -194,7 +198,7 @@ $ReturnMessages = $return.allelements.where{$_.tagName -eq "BODY"}.innerHTML
 $ReturnMessages.where{$_ -like "*receipt code you entered has already been used*"}
 ```
 
-![debug receipt code error](/assets/img/posts/PSFreeBurritos/debug6.gif)
+[![debug receipt code error](/assets/img/posts/PSFreeBurritos/debug6.png)](/assets/img/posts/PSFreeBurritos/debug6.gif)
 
 Wow that's a lot of output.  That would take some work to filter down to just that message, but fortunately we don't have to do that.  Just the existence of that text is enough to tell us that we had an error, so we can just craft our own error message and call it a day.
 
@@ -216,7 +220,7 @@ That sounds definitively successful to me, so let's see if we can find that in t
 $ReturnMessages = $return.allelements.where{$_.tagName -eq "BODY"}.innerHTML
 $ReturnMessages | where-object{$_ -like "*Thank You*"}
 ```
-![searching for the thank you message](/assets/img/posts/PSFreeBurritos/debug8.gif)
+[![searching for the thank you message](/assets/img/posts/PSFreeBurritos/debug8.png)](/assets/img/posts/PSFreeBurritos/debug8.gif)
 
 Bingo, there's our success message.  If you were following along at home, as you were stepping through the debugger you might have noticed another piece of data that blinked by.  Let's look again:
 
