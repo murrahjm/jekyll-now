@@ -234,6 +234,152 @@ Muahahahahahaa!! Gimme those free burritos baby!  Packaged all up now we've got 
 
 # The Survey
 
+Whew!  That was a lot to unpack up there.  Almost like a... no, scratch that.  I think I've reached my quota of bad burrito puns at this point.  So let's just proceed with the PowerShell.  In this section we want to take what we've built above and wrap up all that goodness in a convenient package.  Something you could hold in two hands perhaps?  NO!  We're done with the puns!  Ok where was I?  Oh right, we want to build something a little more user friendly than editing a JSON file.  The web form that we started this whole thing with is more or less what we want, but we should PowerShell it because why not?  
 
+Our survey form should do three things:
+
+* Gather all the survey answers and validate the values
+* Convert the answers to the format expected by the server
+* package the answers into the form data array of JSON objects and pass them to the submission function
+
+* oh and optionally export the packaged data out to a file
+
+That doesn't sound to bad.  Let's tackle those one bite at a time.  (dammit!)  
+
+## Gathering Inputs
+Ok for the survey there are a few ways we could go about getting that data.  The first thing that comes to mind would be our old friend `Read-Host`.
+
+```powershell
+PS P:\> $tasteoffood = read-host -Prompt "On a scale of 1 to 5, how would you rate the taste of your food"
+On a scale of 1 to 5, how would you rate the taste of your food: 5
+
+PS P:\> $tasteoffood
+5
+```
+
+That's not bad, it certainly looks like a survey.  But, there's nothing stopping anyone from entering anything in response.  We'd have to add some code to verify that input, maybe throw an error if is invalid, or try again or something.  We have a lot of questions to go through so that could get tedious quick.
+
+Another way to handle it would be to handle all the inputs and validations in the param block.  That's a little cleaner than coding all the validation ourselves.
+
+```powershell
+[Parameter(Mandatory=$True,
+    HelpMessage='On a scale of 1 to 5 how would you rate the taste of your food'
+)]
+[ValidateSet('1','2','3','4','5')]
+[String]$TasteofFood,
+```
+
+That's pretty clean, but it's not the best looking interface.  Here's what we get if we run that
+
+```powershell
+Get-FreeBurritos
+cmdlet Get-FreeBurritos at command pipeline position 1
+Supply values for the following parameters:
+(Type !? for Help.)
+TasteofFood: !?
+On a scale of 1 to 5 how would you rate the taste of your food
+TasteofFood: 5
+```
+
+PowerShell doing it's thing there, so it's just going to prompt us for a parameter name, rather than the nice pretty survey question we had in mind.  Of course we can always hit `!?` to get the full question, but honestly, have you ever actually used that feature?  I mean it's there, so it's not terrible, but not perfect.
+
+In thinking about this problem I did stumble across an third way.  A dark, stormy way that is most certainly a bad idea.  An unholy combination of the above two methods that oddly enough seems to actually work.
+
+```powershell
+param(
+    [Parameter(Mandatory=$True)]
+    [ValidateSet('1','2','3','4','5')]
+    ${On a scale of 1 to 5 how would you rate the taste of your food}
+)
+```
+You would be right if your first reaction was *WTF is that?!?*  You would also be right if your next thought was *Does that nonsense actually work?*  It does actually, and quite well.  Let's look at our output:
+
+```powershell
+Get-FreeBurritos
+cmdlet Get-FreeBurritos at command pipeline position 1
+Supply values for the following parameters:
+On a scale of 1 to 5 how would you rate the taste of your food: 1
+```
+Now that looks like the kind of survey question we want to actually ask!  And because it's in the param block we still have our parameter validation and all that.  The downside is that our variable name is rather unwieldy, and in fact in our function we have to reference the whole thing like this:
+
+```powershell
+write-output ${On a scale of 1 to 5 how would you rate the taste of your food}
+```
+
+Also tab completion on the command line gets totally confused and you can't really type it all out on the command line at all.
+
+![No bueno!](/assets/img/posts/PSFreeBurritos/survey1.gif)
+
+You could add an alias value to it and specify that on the command line, but our tab completion won't pick that up.  So not a perfect solution either.  And to be honest there are probably other reasons why it's bad, but it was pretty interesting that it worked, so something to consider for your next survey-related endeavor.
+
+## Formatting Data
+
+At this point we've chosen one of the above methods (I won't judge!) and proceeded to create a very large host of inputs.  Now that we have all this data what do we do with it?  Well remember the JSON file from earlier?
+
+```JSON
+[   
+    {
+        "lang" : "en",
+        "stay_main-pager":  "0",
+        "nodeId":  "survey1",
+        "ballotVer":  "2",
+        "hmac":  null,
+        "is_embedded":  "false",
+        "defPgrAction":  "next",
+        "onf_q_chipotle_survey_invitation_method_alt":  "10",
+        "spl_q_chipotle_receipt_code_txt":  null,
+        "forward_main-pager":  "Begin Survey"
+    },
+    ...
+    {
+        "stay_main-pager" : "14",
+        "nodeId" : "survey1",
+        "ballotVer" : "10",
+        "hmac" : "",
+        "is_embedded" : "false",
+        "defPgrAction" : "next",
+        "spl_q_chipotle_customer_first_name_txt" : "Jeremy",
+        "spl_q_chipotle_customer_last_name_txt" : "Murrah",
+        "spl_q_chipotle_customer_email_address_txt" : "murrahjm@gmail.com",
+        "forward_main-pager" : "Finish"
+    }
+]
+```
+
+Yeah that's the one!  Well all we have to do is recreate that!  Simple right?  Well I had a friend once that used to tell me *If you're not cheating you're not trying* so let's cheat a little!  We're going to include a sample json file with our module and just import the contents on the sly.  So now we have an array of objects already in the format and order that we want it in.
+
+```powershell
+$formdata = get-content "$PSScriptRoot\sampleformdata.json" | convertfrom-json
+```
+
+Now we just have to replace the form values with our survey answers!  That gets a little tedious but not super complicated.  We end up with two methods for doing that.  For some of our answers it's as straight forward as setting the value:
+
+```powershell
+$formdata[0].spl_q_chipotle_receipt_code_txt = $formattedReceiptCode
+$formdata[1].onf_q_chipotle_overall_experience_5ptscale = $OverallExperience
+$formdata[1].spl_q_chipotle_reason_for_score_cmt = $ReasonForScore
+```
+
+For our radio buttons we have to do a little more work.  Remember above when I mentioned that they have a somewhat cryptic method of storing the radio button selection?  They use a value of 10 or 20 or 30 or some increment like that to specify which button is selected.  Well we definitely don't want our survey question to ask for an answer of 10 or 20, we want human words like 'Dine-In' or 'Carry-Out', etc.  So let's use the good ol' `switch` construct
+
+```powershell
+Switch ($ExperienceType){
+    'Dine-In' {$formdata[2].onf_q_chipotle_experience_type_alt = '10'}
+    'Carry-Out' {$formdata[2].onf_q_chipotle_experience_type_alt = '20'}
+    'Catering' {$formdata[2].onf_q_chipotle_experience_type_alt = '30'}
+    'Delivery' {$formdata[2].onf_q_chipotle_experience_type_alt = '40'}
+}
+```
+
+That's not too bad actually.  Relatively straightforward transformation from our survey answer to our submission code.  We'll do a little rinse and repeat on that and eventually end up with all our answers in the right format.  Great!  Now we've updated our `$formdata` variable with all of our data and we can simply send that over to our submission function and boom we're all set!
+
+But wait there's more!  Order now and receive two for half the price!  Ok not really that much more but since we are probably going to submit this form data more than once (I mean you either love burritos or you don't right?) we might as well save ourselves from having to answer the questions every day.  So let's say we make a switch parameter called `$ExportAnswerFile`.  And we'll then dump our `$formdata` out to a JSON file if that is selected.  Then tomorrow (or later today, again no judgement here) we can pass in that JSON file instead of answering the questions again.
+
+```PowerShell
+If ($ExportAnswerFile){
+    $formdata | ConvertTo-Json | set-content -Path "$PSScriptRoot\SurveyAnswers.json"
+}
+```
 
 # Profit!
+
