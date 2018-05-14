@@ -104,7 +104,7 @@ spl_q_chipotle_receipt_code_txt
 i_onf_q_chipotle_survey_invitation_method_alt_20 20
 beginButton                                      Begin Survey
 ```
-Ok that's a lot of stuff, but what we care about here is the `spl_q_chipotle_receipt_code_txt`, `nodeID` and `ballotVer`  Most of the other stuff we'll just keep in there.  Otherwise it all looks pretty similar to what we saved from our fiddler capture into our JSON file.  Oh, so interesting thing with `i_onf_q_chipotle_survey_invitation_method_alt_10` and `i_onf_q_chipotle_survey_invitation_method_alt_20`, those are actually the radio buttons.  To *select* a particular button we just include the root key name (the name above with the _10 or _20 part) and then use the value for the button we want (10 or 20).  We'll see that again in later pages as well.  No idea if that's a common way to do radio buttons, but it's pretty consistent here.  Not a huge complexity, but it helps to eat a few more burritos to have plenty of sample data.  Well, *help* is a strong word but it couldn't possibly hurt.
+Ok that's a lot of stuff, but what we care about here is the `spl_q_chipotle_receipt_code_txt`, `nodeID` and `ballotVer`.  Most of the other stuff we'll just keep in there.  Otherwise it all looks pretty similar to what we saved from our fiddler capture into our JSON file.  Oh, so interesting thing with `i_onf_q_chipotle_survey_invitation_method_alt_10` and `i_onf_q_chipotle_survey_invitation_method_alt_20`, those are actually the radio buttons.  To *select* a particular button we just include the root key name (the name above with the _10 or _20 part) and then use the value for the button we want (10 or 20).  We'll see that again in later pages as well.  No idea if that's a common way to do radio buttons, but it's pretty consistent here.  Not a huge complexity, but it helps to eat a few more burritos to have plenty of sample data.  Well, *help* is a strong word but it couldn't possibly hurt.
 
 Where was I?  Oh right, `nodeID` and `ballotVer`.  So `nodeID` appears to be a session-like thing.  It sometimes differs between surveys but doesn't appear to differ between individual form submissions.  `ballotVer` is a little different.  At first glance it just looks like a page number or something, incrementing each time.  But upon closer inspection it appears to skip a value every now and again.  That's weird, so we'll just grab it from the return object and apply that value to the next form data.
 
@@ -145,7 +145,7 @@ A really great way to look at something like this while our script is running is
 
 Ok, so now that you know ~~kung fu~~ debugging, let's get to it!
 
-We'll test our invalid receipt code scenario first.  Let's do three things first:
+We'll test our invalid receipt code scenario first.  Let's do three things to set up our environment before hitting the big red button:
 
 * Set a break point right below this line in our main function:
 
@@ -162,6 +162,8 @@ get-FreeBurritos -ReceiptCode 00000000000000000000 -answerfile .\sampleformdata.
 
 * Open fiddler and set it to start capturing so we can gather the web data as we hit our break point
 
+Now that we're all set hit `F5` to start up your script.
+
 ![debugger breakpoint](/assets/img/posts/PSFreeBurritos/debug1.png)
 
 Once we hit our break point, we should have one captured packet in fiddler.  Let's grab the raw output of the return packet and copy/paste it over to notepad to do a quick search.
@@ -172,7 +174,7 @@ There's a ton of data there but let's see if we can get lucky.  Let's search for
 
 ![error found in notepad](/assets/img/posts/PSFreeBurritos/debug3.png)
 
-Wow we found something!  `error-block readable-text` that sounds like an error message.  Ok now that we have that element, let's go over to our debugger and see if we can find that section.  We have the $return variable that should be populated with all this data, so we can just browse that like so:
+Wow we found something!  `error-block readable-text` that sounds like an error message.  Ok now that we have that element, let's go over to our debugger and see if we can find that section.  We have the $return variable that should be populated with all this data, so we can just browse that like so (click for GIF-y goodness):
 
 [![navigating return variable](/assets/img/posts/PSFreeBurritos/debug4.png)](/assets/img/posts/PSFreeBurritos/debug4.gif)
 
@@ -191,7 +193,7 @@ What's next?  Ah, what about a re-used receipt code?  Well the same process appl
 
 ![web view with receipt code error](/assets/img/posts/PSFreeBurritos/debug5.png)
 
-That looks like some error text to me.  I'd bet that's probably in the same place as the other message, so let's go straight to our debugger and query that returnmessages variable.
+That looks like some error text to me.  I'd bet that's probably in the same place as the other message, so let's go straight to our debugger and query that `$returnmessages` variable.
 
 ```PowerShell
 $ReturnMessages = $return.allelements.where{$_.tagName -eq "BODY"}.innerHTML
@@ -230,7 +232,7 @@ Did you catch that `surveyprogress` value?  That looks like an incrementing valu
 
 ![progress bar](/assets/img/posts/PSFreeBurritos/debug10.gif)
 
-Muahahahahahaa!! Gimme those free burritos baby!  Packaged all up now we've got ourselves a script.  Well, I've got a script.  But I want everyone to have free burritos.  Like a burrito fairy or something.  Up to this point we've been interacting with our saved JSON file.  It works, but it's not the most user friendly thing in the world.  Ideally anyone using this tool would be able to craft their own JSON file by answering survey questions, without the need for a fiddler trace and all that.  The next section will focus on all that.  But in the meantime all that debugging left me famished.  Time for a burrito snack!
+Muahahahahahaa!! Gimme those free burritos baby!  Packaged all up now we've got ourselves a script!  Well, I've got a script.  But I want everyone to have free burritos.  Like a burrito fairy or something.  Up to this point we've been interacting with our saved JSON file.  It works, but it's not the most user friendly thing in the world.  Ideally we'd anyone using this tool would be able to craft their own JSON file by answering survey questions, without the need for a fiddler trace and all that.  The next section will focus on all that.  But in the meantime all that debugging left me famished.  Time for a burrito snack!
 
 # The Survey
 
@@ -257,9 +259,9 @@ PS P:\> $tasteoffood
 5
 ```
 
-That's not bad, it certainly looks like a survey.  But, there's nothing stopping anyone from entering anything in response.  We'd have to add some code to verify that input, maybe throw an error if is invalid, or try again or something.  We have a lot of questions to go through so that could get tedious quick.
+That's not bad, it certainly looks like a survey.  But, there's nothing stopping anyone from entering anything in response.  We'd have to add some code to verify that input, maybe throw an error if it's invalid, or try again or something.  We have a lot of questions to go through so that could get tedious quick.
 
-Another way to handle it would be to handle all the inputs and validations in the param block.  That's a little cleaner than coding all the validation ourselves.
+Another way to handle it would be to define all the inputs and validations in the param block.  That's a little cleaner than coding all the validation ourselves.
 
 ```powershell
 [Parameter(Mandatory=$True,
@@ -269,7 +271,7 @@ Another way to handle it would be to handle all the inputs and validations in th
 [String]$TasteofFood,
 ```
 
-That's pretty clean, but it's not the best looking interface.  Here's what we get if we run that
+That's pretty clean, but it's not the best looking interface.  Here's what we get if we run that:
 
 ```powershell
 Get-FreeBurritos
@@ -283,7 +285,7 @@ TasteofFood: 5
 
 PowerShell doing it's thing there, so it's just going to prompt us for a parameter name, rather than the nice pretty survey question we had in mind.  Of course we can always hit `!?` to get the full question, but honestly, have you ever actually used that feature?  I mean it's there, so it's not terrible, but not perfect.
 
-In thinking about this problem I did stumble across an third way.  A dark, stormy way that is most certainly a bad idea.  An unholy combination of the above two methods that oddly enough seems to actually work.
+In thinking about this problem I did stumble across a third way.  A dark, stormy way that is most certainly a bad idea.  An unholy combination of the above two methods that oddly enough seems to actually work.
 
 ```powershell
 param(
@@ -292,7 +294,7 @@ param(
     ${On a scale of 1 to 5 how would you rate the taste of your food}
 )
 ```
-You would be right if your first reaction was *WTF is that?!?*  You would also be right if your next thought was *Does that nonsense actually work?*  It does actually, and quite well.  Let's look at our output:
+You would be right if your first reaction was *WTF is that?!?*  You would also be right if your next thought was *Does that nonsense actually work?*  It does actually, well sort of.  Let's look at our output:
 
 ```powershell
 Get-FreeBurritos
@@ -300,7 +302,7 @@ cmdlet Get-FreeBurritos at command pipeline position 1
 Supply values for the following parameters:
 On a scale of 1 to 5 how would you rate the taste of your food: 1
 ```
-Now that looks like the kind of survey question we want to actually ask!  And because it's in the param block we still have our parameter validation and all that.  The downside is that our variable name is rather unwieldy, and in fact in our function we have to reference the whole thing like this:
+Now that looks like the kind of survey question we want to actually ask!  And because it's in the param block we still have our parameter validation and all that.  The downside is that our variable name is rather unwieldy, and in fact in our function any time we want to use that variable we have to reference the whole thing like this:
 
 ```powershell
 write-output ${On a scale of 1 to 5 how would you rate the taste of your food}
@@ -346,7 +348,7 @@ At this point we've chosen one of the above methods (I won't judge!) and proceed
 ]
 ```
 
-Yeah that's the one!  Well all we have to do is recreate that!  Simple right?  Well I had a friend once that used to tell me *If you're not cheating you're not trying* so let's cheat a little!  We're going to include a sample json file with our module and just import the contents on the sly.  So now we have an array of objects already in the format and order that we want it in.
+Yeah that's the one!  Well all we have to do is recreate that!  Simple right?  Well I had a friend that used to tell me "*If you're not cheating you're not trying*" so let's cheat a little!  We're going to include a sample json file with our module and just import the contents on the sly.  So now we have an array of objects already in the format and order that we want it in.
 
 ```powershell
 $formdata = get-content "$PSScriptRoot\sampleformdata.json" | convertfrom-json
@@ -360,7 +362,7 @@ $formdata[1].onf_q_chipotle_overall_experience_5ptscale = $OverallExperience
 $formdata[1].spl_q_chipotle_reason_for_score_cmt = $ReasonForScore
 ```
 
-For our radio buttons we have to do a little more work.  Remember above when I mentioned that they have a somewhat cryptic method of storing the radio button selection?  They use a value of 10 or 20 or 30 or some increment like that to specify which button is selected.  Well we definitely don't want our survey question to ask for an answer of 10 or 20, we want human words like 'Dine-In' or 'Carry-Out', etc.  So let's use the good ol' `switch` construct
+For our radio buttons we have to do a little more work.  Remember above when I mentioned that they have a somewhat cryptic method of storing the radio button selection?  They use a value of 10 or 20 or 30 or some increment like that to specify which button is selected.  Well we definitely don't want our survey question to ask for an answer of 10 or 20, we want human words like 'Dine-In' or 'Carry-Out', etc.  So let's use the good ol' `switch` construct.
 
 ```powershell
 Switch ($ExperienceType){
@@ -383,3 +385,6 @@ If ($ExportAnswerFile){
 
 # Profit!
 
+I'm not sure how I thought I'd squeeze this into a 10 minute demo, but I'm glad I decided to write it down.  Burrito-specific context aside, I hope this has been a helpful dive into how you can interact with form data through PowerShell, and also how the debugger can really help explore these web request data structures.  Also the survey stuff, while not as 'exciting' or 'complex' as the first section is an interesting take on some of the different ways to gather data from inputs and provide the interface that squishy human-types seem to like.  That variable-encapsulating-a-sentence thing is weird and gave me a chuckle when I saw that it kinda worked.  PowerShell never seems to run out of little secret gems like that.
+
+Anyway, I hope you got something out of this post.  The complete code for this project is on my [PSFreeBurritos](https://github.com/murrahjm/PSFreeBurritos) repo on github.  If you have any questions about it or see something that is totally wrong or just plain dumb, hit me up on the [Twitters](https://twitter.com/JeremyMurrah) or use that comment form below (I think it works now).  And until then, may you live a life like a burrito, full of joy and smothered in cheese.
