@@ -7,6 +7,7 @@ baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://murrahjm.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jeremymurrah # replace with your_twitter_username or comment to remove link from footer
 github_username:  murrahjm # replace with your_github_username or comment to remove link from footer
+linkedin_username: jeremymurrah
 #instagram_username: murrahjm # replace with your_instagram_username or comment to remove link from footer
 social:
   name: Jeremy Murrah
@@ -17,6 +18,12 @@ social:
     - https://plus.google.com/+JeremyMurrah
     - https://github.com/murrahjm
 
+footer-links:
+  email: murrahjm@gmail.com
+  github: murrahjm
+  linkedin: jeremymurrah
+  twitter: JeremyMurrah
+  
 disqus:
   shortname: murrahjm-github-io # to enable comments replace with your_disqus_shortname
 
