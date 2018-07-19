@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hash Tables and Dictionaries
-featured-img: PowerShell
+featured-img: Powershell
 categories: [PowerShell]
 ---
 

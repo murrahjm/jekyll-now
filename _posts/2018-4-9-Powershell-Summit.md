@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PowerShell Summit
-featured-img: PowerShell
+featured-img: Powershell
 categories: [PowerShell]
 ---
 
