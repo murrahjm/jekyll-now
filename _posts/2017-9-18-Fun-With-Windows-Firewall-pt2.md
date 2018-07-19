@@ -65,7 +65,7 @@ So lets walk through this marked up nonsense.  First, the firewall log header.  
 
 Now we have the sample firewall log entries.  This is a simple tab separated list, so we just want to turn each line into an object with named properties.  So for each value on the line we encapsulate it and give it a name, using the format ```{variablename:value}```.  Again since this is powershell under the voodoo we can get fancy with our declarations like this:```{[variabletype]variablename:value}```.  So we mark up the first line and give each tab-separated value a property name.  When ConvertFrom-String runs it will give us an object with properties named TimeStamp, Action, Protocol, SourceIP, etc.
 
-So that's pretty cool, but what happens when we get to the second line?  We're going to have a bunch of duplicate properties when what we actually want is a second object in the output stream.  So we use the '*' designation on the variable name for the first item on that line to indicate that this should be the beginning of a new object.  And that's about it.  We repeat this for a few more lines just to give ConvertFrom-String some more data for its matching algorithms.  Then when we run ConvertFrom-String and give it both the template and the file to process, it'll do its dark magic and spit out an array of glorious objects.  You can then do sorts, filters, csv outputs, etc.  If you find that convertfrom-string doesn't match a particular value you can ~~sacrifice another chicken~~  add another line with the problematic data to the template file and it should pick that up as part of its pattern.  Thanks Powershell!
+So that's pretty cool, but what happens when we get to the second line?  We're going to have a bunch of duplicate properties when what we actually want is a second object in the output stream.  So we use the '*' designation on the variable name for the first item on that line to indicate that this should be the beginning of a new object.  And that's about it.  We repeat this for a few more lines just to give ConvertFrom-String some more data for its matching algorithms.  Then when we run ConvertFrom-String and give it both the template and the file to process, it'll do its dark magic and spit out an array of glorious objects.  You can then do sorts, filters, csv outputs, etc.  If you find that convertfrom-string doesn't match a particular value you can ~~sacrifice another chicken~~  add another line with the problematic data to the template file and it should pick that up as part of its pattern.  Thanks PowerShell!
 
 ## Getting the data
 
@@ -104,7 +104,7 @@ If the computer has the firewall disabled the file won't exist.
         }
 ```
 
-And that's about it.  Because we did things the Powershell way we can easily pipe this output to out-gridview, export-csv, etc.  Next up we tackle the rules themselves, applying the same desire for objects to what are essentially netsh commands for backward compatibility.  Click below if ye dare (or something).
+And that's about it.  Because we did things the PowerShell way we can easily pipe this output to out-gridview, export-csv, etc.  Next up we tackle the rules themselves, applying the same desire for objects to what are essentially netsh commands for backward compatibility.  Click below if ye dare (or something).
 
 ## Firewall Cmdlets index
 

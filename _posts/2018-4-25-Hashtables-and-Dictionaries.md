@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hash Tables and Dictionaries
-featured-img: Powershell
+featured-img: PowerShell
 categories: [PowerShell]
 ---
 
@@ -13,7 +13,7 @@ When it's ~~ajar~~ a dictionary!  It would seem that today is data type week, st
 
 [about_hash_tables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-6) defines a hash table as "a compact data structure that stores one or more key/value pairs" and says "...also known as a dictionary..."  Basically it looks like this:
 
-```Powershell
+```PowerShell
 @{one=1;two=2}
 
 Name                           Value
@@ -24,7 +24,7 @@ two                            2
 ```
 You can reference the parts of a hash table like this:
 
-```Powershell
+```PowerShell
 $hashtable.keys
 one
 two
@@ -64,7 +64,7 @@ $hashtable | gm
 
 So that all seems pretty straight forward.  But then, what is a dictionary?  Well that depends.  Let's look at one example, say `$PSBoundParameters`.  If you're not familiar, `$PSBoundParameters` is an automatic variable that is populated inside a running script or function, and contains the names and values of any specified parameters.  It's a great way to determine if a user provided a value to a parameter at run time.  It only exists inside the running script or function, so it's tricky to catch, but if we use a debugger or if we just output the contents, we can see something like this:
 
-```Powershell
+```PowerShell
 Function Test-Hashtable {
     Param(
         $one,
@@ -82,7 +82,7 @@ two     2
 ```
 Hey that looks familiar doesn't it? Let's grab that into a variable and play with it.
 
-```Powershell
+```PowerShell
 $output = Test-hashtable -one 1 -two 2
 
 $output.keys
@@ -102,7 +102,7 @@ $output | gm
 
 Yep, that all looks like what we'd expect, nothing funny going on.  That is totally a hashtab... wait what is that type?!  PSBoundParametersDictionary?  Weird, well a hash table is a dictionary right, so maybe a dictionary is like a hash table?  Let's check a few of those methods we used with our hash table, maybe it's more or less the same thing
 
-```Powershell
+```PowerShell
 $output.add
 
 OverloadDefinitions
@@ -128,7 +128,7 @@ It's got a little more going on in the way of overloads, but the basic methods a
 
 the PSBoundParametersDictionary object returns a boolean value (presumably success/failure status) whereas the hashtable returns nothing. `[void]`. So when you have that line buried in a bunch of other code and you're trying to control your output you can't figure out why you keep seeing:
 
-```Powershell
+```PowerShell
 True
 
 Key Value

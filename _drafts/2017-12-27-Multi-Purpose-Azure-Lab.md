@@ -32,7 +32,7 @@ Remember when every website was doing that "break" nonsense?  "Keep reading afte
 
 We'll start with the domain controller because everyone loves DNS, and a domain controller is the most fun way to get a DNS server (or something).  Cue the code!
 
-```Powershell
+```PowerShell
 Add-WindowsFeature AD-Domain-Services -Restart -IncludeAllSubFeature -IncludeManagementTools
 Install-ADForest -Name azurelab.local
 ```
@@ -43,7 +43,7 @@ Well that was uneventful.  I suppose you could get fancy with the domain setup i
 
 This should be slightly more interesting than the domain controller setup
 
-```Powershell
+```PowerShell
 Add-Computer -domainname azurelab.local -credential administrator@azurelab.local
 #wait for reboot
 Add-WindowsFeature DHCP -Restart -IncludeAllSubFeature -IncludeManagementTools
@@ -62,9 +62,9 @@ Now we have DNS, DHCP and a domain.  All the comforts of home.  Just need to go 
 
 # More Setup
 
-Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the Powershell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) with all the details.
+Before we can setup our VPN connection we need to have something on the other end to connect to, so let's setup our Azure network.  Nothing too fancy, just like our local lab.  At this point we're just going to do a single vnet with a single subnet. You can do it from the portal if you want but here's the PowerShell commands and a magic button for the azure cloud shell.  Try it out! And since I always have to look up these commands here's the [URL](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-ps) with all the details.
 
-```Powershell
+```PowerShell
 $resourcegroupname = 'AzurelabRG'
 $location = 'SouthCentralUS'
 New-AzureRMResourceGroup -name $resourcegroupname -location $location
@@ -81,7 +81,7 @@ After that things are going to get weird.  We're going to try to enable routing 
 
 Step 1, create a VPN Gateway for our new vnet via the portal.  There's probably a powershell way to do that but we'll figure that out later.  The portal says this could take a while so while that's churning along we'll switch over to our Hyper-V machine, and connect to our gateway VM.  From here we'll create and export our certificates.  You have a couple of options here.  You can install the AzureRM module on your vpn gateway machine and run all the commands on that machine, or you can run the cert commands on the vpngateway through invoke-command up to retreiving the certificate data, then run the azure stuff from the host. Either way should work.
 
-```Powershell
+```PowerShell
 #create a root certificate
 $rootcert = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
 -Subject "CN=P2SRootCert" -KeyExportPolicy Exportable `
@@ -97,7 +97,7 @@ New-SelfSignedCertificate -Type Custom -KeySpec Signature `
 $Base64RootCert = [convert]::tobase64string($rootcert.RawData)
 ```
 
-```Powershell
+```PowerShell
 #Login to Azure if you haven't already
 #if you run this from a different machine than the gateway, you really only need the
 #base64rootcert variable from the above code block
@@ -108,7 +108,7 @@ Add-AzureRmVpnClientRootCertificate -VpnClientRootCertificateName P2SRootCert -V
 
 Ok, almost there.  So now we have a configured vpn gateway on the azure side, ready to take a connection from our local machine, complete with certificate authentication.  We just need to download and install the VPN client software.  Luckily we can do that from azure too, amazing!  Again, you can either setup the AzureRM module on your gateway machine, or run the below on your host, then copy it over manually.
 
-```Powershell
+```PowerShell
 $clientURL = new-azurermvpnclientconfiguration -ResourceGroupName $resourcegroupname -Name $gateway.name -AuthenticationMethod EAPTLS | select-object -expandproperty vpnprofilesasurl
 Invoke-WebRequest -Uri $clientURL -OutFile "$env:temp\VPNPackage.zip"
 

@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Powershell Summit
-featured-img: Powershell
+title: PowerShell Summit
+featured-img: PowerShell
 categories: [PowerShell]
 ---
 
-I could write a book about Powershell Summit, and that's just from the first day.  Both the breadth and depth of innovation in this space is staggering.  But I don't want to talk about Powershell.  Because it isn't really about Powershell.  Powershell is an amazing tool that can enable any number of things, and accelerate everything else.  But it isn't really about Powershell.
+I could write a book about PowerShell Summit, and that's just from the first day.  Both the breadth and depth of innovation in this space is staggering.  But I don't want to talk about PowerShell.  Because it isn't really about PowerShell.  PowerShell is an amazing tool that can enable any number of things, and accelerate everything else.  But it isn't really about PowerShell.
 
 # It's about the People
 
@@ -45,4 +45,4 @@ It was all just great fun, and was really cool to see everyone doing the same ta
 
 # Conclusion
 
-If you made it this far and can't tell already, I had a good time.  It has absolutely changed the way I think about my job and my career.  When all the session videos go up I'll have my own little summit all over again to dig into all the technical details, but my mindset has been forever shifted.  Also, if you made it this far, I'll guess you are a fan as well, or atleast midly curious.  Make every effort to attend next year, especially if you've not been to a Powershell Summit before.  Thanks for reading all this and hopefully I will see you at Summit 2019!
+If you made it this far and can't tell already, I had a good time.  It has absolutely changed the way I think about my job and my career.  When all the session videos go up I'll have my own little summit all over again to dig into all the technical details, but my mindset has been forever shifted.  Also, if you made it this far, I'll guess you are a fan as well, or atleast midly curious.  Make every effort to attend next year, especially if you've not been to a PowerShell Summit before.  Thanks for reading all this and hopefully I will see you at Summit 2019!

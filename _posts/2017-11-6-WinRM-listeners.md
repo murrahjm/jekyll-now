@@ -179,10 +179,10 @@ Config
 
 So that's a whole mess of stuff.  And it's not everything, but it's most of the things.  You can see there some of the things we've already talked about, the client authentication options, the server authentication options, some of the listener info.  You can see that "AllowUnencrypted" setting ([Don't change that](https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/).  No not even if some [product documentation](https://pubs.vmware.com/orchestrator-plugins/index.jsp?topic=%2Fcom.vmware.using.powershell.plugin.doc_10%2FGUID-D4ACA4EF-D018-448A-866A-DECDDA5CC3C1.html) tells you to).  This view is great as it shows you the heirarchy you can use to build any command.  So if you want to change any value, you just use the format:  ```winrm set <path/to/setting> @{key=value}```.  If you want to get a particular value you can use the same format with ```winrm get```.
 
-So that's a pretty good tool, and if one tool is good, then two tools is even better!  Enter Powershell:
+So that's a pretty good tool, and if one tool is good, then two tools is even better!  Enter PowerShell:
 
 ```powershell
-# Powershell mounts the WSMan catalog as a file system or 'PSDrive'
+# PowerShell mounts the WSMan catalog as a file system or 'PSDrive'
 Get-PSDrive WSMan
 # standard filesystem commands like Get-ChildItem (gci or dir), Set-Location(cd) work
 gci wsman:\localhost

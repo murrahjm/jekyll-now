@@ -70,9 +70,9 @@ And that should do it!  Now let's write some code!
 
 # Invoke-WebRequest
 
-Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in Powershell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1)!
+Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in PowerShell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1)!
 
-```Powershell
+```PowerShell
 $url = 'https://www.chipotlefeedback.com'
 #initial connection and retreive first formdata
 #also save cookie info in the session variable
@@ -111,7 +111,7 @@ Where was I?  Oh right, `nodeID` and `ballotVer`.  So `nodeID` appears to be a s
 
 So armed with all that good info we're ready to start submitting form data.
 
-```Powershell
+```PowerShell
 #get these initial values
 $nodeID = $webform.fields.nodeId
 $nextBallotVer = $webform.fields.ballotVer
@@ -205,7 +205,7 @@ $ReturnMessages.where{$_ -like "*receipt code you entered has already been used*
 
 Wow that's a lot of output.  That would take some work to filter down to just that message, but fortunately we don't have to do that.  Just the existence of that text is enough to tell us that we had an error, so we can just craft our own error message and call it a day.
 
-```Powershell
+```PowerShell
 write-error "The Receipt code you entered has already been used to complete a survey"
 return
 ```

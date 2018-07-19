@@ -2,7 +2,7 @@ title: Murrahjm.Github.io # your site title
 author: Jeremy Murrah
 email: murrahjm@gmail.com # email for form submission, you also have to change it in _js/scripts.js
 description: > # this means to ignore newlines until "baseurl:"
-  Blog for all things Powershell and Automation.
+  Blog for all things PowerShell and Automation.
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://murrahjm.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jeremymurrah # replace with your_twitter_username or comment to remove link from footer

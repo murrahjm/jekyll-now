@@ -1,4 +1,4 @@
-#Create a Release Pipeline to Publish Powershell Modules
+#Create a Release Pipeline to Publish PowerShell Modules
 
 You can't go anywhere these days without reading about devops, configuration as code, release pipelines, and all that other developer stuff.  For good reason of course, it's all pretty awesome stuff.  The latest promise of a path to that mythical golden land of IT, where everything just works and there are no midnight telephone calls.  But not everyone works in a customer-facing, developer-oriented business.  If half of your apps are 10 years old and your business practices are even older, it may seem impossible to make that transition.  And it might actually be impossible, since real change has to come from the top down.  But don't lose hope!  You can at the very least learn the process for your own purposes, and even get some sweet automation out of it as a bonus.
 

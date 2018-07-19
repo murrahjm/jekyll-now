@@ -59,7 +59,7 @@ __Note__:
 Our rapid, short term resolution plan is basically to swap the secondary certificates back into the primary slot.  That's the one the applications are trusting, so that's the one that they want to see.  We can update the apps with the new certificate later, but right now we want them talking again.  Maybe you've opened up your ADFS management console and see something like this:
 
 ![Why are you grey!?](../assets/img/posts/ADFSCertificateRollover/CannotSetPrimary.PNG)
-You cannot manually select the primary certificate because auto-rollover is enabled.  This must be disabled before you can fix it.  Like most things, the best way to do this is with Powershell.  Open a remote session to your primary ADFS server and run the following:
+You cannot manually select the primary certificate because auto-rollover is enabled.  This must be disabled before you can fix it.  Like most things, the best way to do this is with PowerShell.  Open a remote session to your primary ADFS server and run the following:
 
 ``` powershell
 #Disable automatic certificate rollover so we can manually swap the certificate roles
