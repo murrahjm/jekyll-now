@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Multi-Purpose Azure Lab
+categories: [PowerShell, Azure]
 ---
 # Lab Lab Lab!
 

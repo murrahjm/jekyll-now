@@ -2,6 +2,7 @@
 layout: post
 title: Executing DSC resources from Ansible with the win_dsc Module
 featured-img: ansible
+categories: [Ansible]
 ---
 
 

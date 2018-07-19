@@ -2,6 +2,7 @@
 layout: post
 title: Fun With Windows Firewall pt. 2
 featured-img: windowsfirewall
+categories: [PowerShell]
 ---
 
 This post is part of a series of posts outlining a handful of windows firewall management cmdlets.  See the intro post [here](/Fun-With-Windows-Firewall).

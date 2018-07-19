@@ -2,6 +2,7 @@
 layout: post
 title: PSFreeBurritos
 featured-img: burrito
+categories: [PowerShell]
 ---
 # An Ode to the Perfect Food
 

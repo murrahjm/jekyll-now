@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Revert ADFS Certificate Rollover
+categories: [ADFS]
 ---
 INT. HOME IN BED - MIDNIGHT
 

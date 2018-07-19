@@ -2,6 +2,7 @@
 layout: post
 title: Hash Tables and Dictionaries
 featured-img: Powershell
+categories: [PowerShell]
 ---
 
 # When is a Hash Table not a Hash Table

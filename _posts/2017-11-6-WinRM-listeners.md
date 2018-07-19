@@ -2,6 +2,7 @@
 layout: post
 title: Windows Remote Management
 comments: true
+categories: [PowerShell]
 ---
 It occurred to me the other day that besides being useful for other folks to read, a blog could be useful for me to record stuff that I'm always forgetting or having to look up.  And one of those things is WinRM.  If you're not familiar, WinRM is a remoting protocol for Windows.  It's like SSH but useful (that's probably going to get me in trouble).  But as awesome as it is, it's not just a remoting protocol.  There's a whole thing underneath it to make it work.  Like an iceberg, if the iceberg were software.  A software defined iceberg maybe.  Anyway, so this blog post is going to go into the details of what WinRM is, how it works, what the various options are to it, and all that.  "But wait, I've already tried to read the technet articles on WinRM."  Ok yeah we're not going to go into that much detail.  Those links are included at the end if you want to get exhaustive info.  I'm going to try to distill it down into something you can read and understand in one cup of coffee or less.  Also, for my own selfish purposes this blog will serve as a single point for all these WinRM commands and settings that I keep forgetting.  So let's do it!
 
