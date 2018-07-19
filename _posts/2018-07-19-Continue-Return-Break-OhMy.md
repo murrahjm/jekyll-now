@@ -22,28 +22,29 @@ For my examples I decided to stick with the `for` loop.  Things should work simi
 ```PowerShell
 "**This uses the continue keyword**"
 for ($i = 1; $i -lt 6; $i++)
-{ 
+{
     if ($i -eq 3){continue}
     $i
 }
 
 "**This uses the break keyword**"
 for ($i = 1; $i -lt 6; $i++)
-{ 
+{
     if ($i -eq 3){break}
     $i
 }
 
 "**This uses the return keyword**"
 for ($i = 1; $i -lt 6; $i++)
-{ 
+{
     if ($i -eq 3){return}
     $i
 }
 ```
+
 I have three loops here.  They are all identical except for the keyword used.  The output from above looks like this:
 
-```
+```PowerShell
 **This uses the continue keyword**
 1
 2
@@ -64,40 +65,41 @@ So right off the bat you can see how `continue` is different. `Continue` is tell
 Not surprisingly it turns out they don't do the same thing, we just need a little bit more complexity to find it. In this case the best way to add complexity is to add more loops.
 
 ```PowerShell
-    "**This uses the continue keyword**"
-    for ($i = 1; $i -lt 6; $i++)
+"**This uses the continue keyword**"
+for ($i = 1; $i -lt 6; $i++)
+{
+$i
+    for ($j = 1; $j -lt 6; $j++)
     {
-    $i
-        for ($j = 1; $j -lt 6; $j++)
-        { 
-            if ($j -eq 3){continue}
-            "$i.$J"
-        }
-        
+        if ($j -eq 3){continue}
+        "$i.$J"
     }
-    "**This uses the break keyword**"
-    for ($i = 1; $i -lt 6; $i++)
+}
+"**This uses the break keyword**"
+for ($i = 1; $i -lt 6; $i++)
+{
+$i
+    for ($j = 1; $j -lt 6; $j++)
     {
-    $i
-        for ($j = 1; $j -lt 6; $j++)
-        { 
-            if ($j -eq 3){break}
-            "$i.$J"
-        }   
+        if ($j -eq 3){break}
+        "$i.$J"
     }
-    "**This uses the return keyword**"
-    for ($i = 1; $i -lt 6; $i++)
+}
+"**This uses the return keyword**"
+for ($i = 1; $i -lt 6; $i++)
+{
+$i
+    for ($j = 1; $j -lt 6; $j++)
     {
-    $i
-        for ($j = 1; $j -lt 6; $j++)
-        { 
-            if ($j -eq 3){return}
-            "$i.$J"
-        }   
+        if ($j -eq 3){return}
+        "$i.$J"
     }
+}
 ```
+
 Here I've nested each of the previous loops inside a parent loop.  The conditional test stays inside the inner loop to illustrate what happens to the output.
-```
+
+```PowerShell
 **This uses the continue keyword**
 1
 1.1
@@ -145,6 +147,7 @@ Here I've nested each of the previous loops inside a parent loop.  The condition
 1.1
 1.2
 ```
+
 `Continue` is the same, it's skipping *3* and continuing with the rest of the loop.  Here, though, `return` and `break` are different!  What's going on?  Looking at `break` you can see that when it gets to *3* it is ending the inner loop entirely, but it still goes on with the outer loop.  So you'll never see *4* or *5* from our inner loop but you get all of the outer loop no problem.  This jives with what the documentation says:  "...the Break statement causes PowerShell to immediately exit the loop".
 
 > In the [documentation](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_break) for the `break` keyword there's mention of using labels to specify which loop to break out of, rather than just the one loop the keyword is used in.  I hadn't ever heard of that either, or seen it used that I recall.  It's pretty interesting though, so go check it out.  For the purposes of this article I'll just stick with the default behavior
@@ -158,14 +161,14 @@ To illustrate this, I've added a function in between the two loops.
 ```PowerShell
 function inner-loop ($i) {
     for ($j = 1; $j -lt 6; $j++)
-    { 
+    {
         if ($j -eq 3){continue}
         "$i.$J"
     }
 }
 
 for ($i = 1; $i -lt 6; $i++)
-{ 
+{
     $i
     inner-loop $i
 }
@@ -173,7 +176,7 @@ for ($i = 1; $i -lt 6; $i++)
 
 That looks a little weird so I'll break it down.  Previously the *i* loop was on the outside and the *j* loop was inside.  That's still the case, but now the *j* loop is inside a function, and the *i* loop is calling that function.  Running that with the `continue` keyword shows the full loop output minus the *3*s, just as we would expect.
 
-```
+```PowerShell
 1
 1.1
 1.2
@@ -202,7 +205,8 @@ That looks a little weird so I'll break it down.  Previously the *i* loop was on
 ```
 
 Replacing the `continue` with `break` has more expected output:
-```
+
+```PowerShell
 1
 1.1
 1.2
@@ -219,8 +223,10 @@ Replacing the `continue` with `break` has more expected output:
 5.1
 5.2
 ```
+
 `break` is breaking out of our inner loop just as you'd expect.  Now if I swap out the `break` with `return` will that still return the super short end-everything output?
-```
+
+```PowerShell
 1
 1.1
 1.2
