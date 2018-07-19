@@ -16,7 +16,7 @@ The default value for a windows machine running PS version 5.1 is 'Push'.  This 
 
 That error message is super unhelpful, and while it could be caused by other things, it is definitely caused by an incorrect `RefreshMode` value.  Use the below code to set it to Disabled.
 
-```powershell
+```PowerShell
 [DSCLocalConfigurationManager()]
 configuration LCMConfig
 {

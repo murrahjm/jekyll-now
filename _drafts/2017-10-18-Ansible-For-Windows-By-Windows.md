@@ -11,5 +11,5 @@
 * manage windows clients from ansible playbooks
   * winrm connection requirements
   * credssp or constrained delegation
-  * modules are written in powershell not python
+  * modules are written in PowerShell not python
   * dsc integration

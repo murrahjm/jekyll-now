@@ -70,7 +70,7 @@ And that should do it!  Now let's write some code!
 
 # Invoke-WebRequest
 
-Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in PowerShell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1)!
+Before we start our little loop of form submissions, we need to make that initial connection.  This will give us our session cookies, our session URL, and our initial form page.  We'll start off with the second best cmdlet in PowerShell, [Invoke-WebRequest](https://docs.microsoft.com/en-us/PowerShell/module/microsoft.PowerShell.utility/invoke-webrequest?view=PowerShell-5.1)!
 
 ```PowerShell
 $url = 'https://www.chipotlefeedback.com'
@@ -142,7 +142,7 @@ The funny thing about computers is that they tend to answer the questions that w
 
 The question then is, what does the data look like for each of these errors?  Well the best way to find that out is to do it!  Submit a bogus receipt code, submit a good receipt code twice, munge up your json doc and send that.  The error text will be somewhere in the return data from the Invoke-WebRequest call.  The tricky part will be finding it, but one thing at a time.
 
-A really great way to look at something like this while our script is running is with a debugger.  We can have it pause right when we get our return payload and browse around our data while it's still in memory.  So let's do that!  [This article](https://blogs.technet.microsoft.com/heyscriptingguy/2017/02/06/debugging-powershell-script-in-visual-studio-code-part-1/) on debugging is a great primer to get started.  Also this [Pluralsight course](https://www.pluralsight.com/courses/debugging-powershell-vs-code) is pretty great also.  So go check those out if you're not entirely familiar with the VSCode debugger and come on back.  (Hint: that article takes about 1 burrito worth of time to read, so, you know.  Research.)
+A really great way to look at something like this while our script is running is with a debugger.  We can have it pause right when we get our return payload and browse around our data while it's still in memory.  So let's do that!  [This article](https://blogs.technet.microsoft.com/heyscriptingguy/2017/02/06/debugging-PowerShell-script-in-visual-studio-code-part-1/) on debugging is a great primer to get started.  Also this [Pluralsight course](https://www.pluralsight.com/courses/debugging-PowerShell-vs-code) is pretty great also.  So go check those out if you're not entirely familiar with the VSCode debugger and come on back.  (Hint: that article takes about 1 burrito worth of time to read, so, you know.  Research.)
 
 Ok, so now that you know ~~kung fu~~ debugging, let's get to it!
 
@@ -150,13 +150,13 @@ We'll test our invalid receipt code scenario first.  Let's do three things to se
 
 * Set a break point right below this line in our main function:
 
-```powershell
+```PowerShell
 $return = invoke-webrequest -uri "$url$($WebForm.action)" -Method POST -Body $hashtable -WebSession $websession
 ```
 
-* open up a new powershell script file to help launch our debugger:
+* open up a new PowerShell script file to help launch our debugger:
 
-```powershell
+```PowerShell
 . .\get-freeburritos.ps1
 get-FreeBurritos -ReceiptCode 00000000000000000000 -answerfile .\sampleformdata.json
 ```
@@ -181,14 +181,14 @@ Wow we found something!  `error-block readable-text` that sounds like an error m
 
 Look at all that data!  That message is really buried under there.  But that's ok, we've found it so we know what to look for now.  Cleaning up our request we can do something like this now in our script:
 
-```powershell
+```PowerShell
 $ReturnMessages = $return.allelements.where{$_.tagName -eq "BODY"}.innerHTML
 if ($ReturnMessages.where{$_ -like "*class=`"error-block readable-text`"*"}){
     Write-error $ReturnMessages.split('<').where{$_ -like "*class=`"error-block readable-text`"*"}.split('<>')[1]
     return
 ```
 
-We're making the assumption here that the generic-sounding `error-block readable-text` class is in fact a generic error message.  Based on that assumption we'll just output the error message as a powershell error object, then bail out of our script. (It turns out this covers scenario 3 as well, so that's cool)
+We're making the assumption here that the generic-sounding `error-block readable-text` class is in fact a generic error message.  Based on that assumption we'll just output the error message as a PowerShell error object, then bail out of our script. (It turns out this covers scenario 3 as well, so that's cool)
 
 What's next?  Ah, what about a re-used receipt code?  Well the same process applies more or less.  We'll do our debugger and our fiddler trace, then look at our return packet.  This time let's look at the web view.
 
@@ -219,7 +219,7 @@ Knowing when we hit an error is great, but we probably want to know when we succ
 ![fiddler web view thank you message](/assets/img/posts/PSFreeBurritos/debug7.png)
 
 That sounds definitively successful to me, so let's see if we can find that in the debugger output
-```powershell
+```PowerShell
 $ReturnMessages = $return.allelements.where{$_.tagName -eq "BODY"}.innerHTML
 $ReturnMessages | where-object{$_ -like "*Thank You*"}
 ```
@@ -252,7 +252,7 @@ That doesn't sound to bad.  Let's tackle those one bite at a time.  (dammit!)
 ## Gathering Inputs
 Ok for the survey there are a few ways we could go about getting that data.  The first thing that comes to mind would be our old friend `Read-Host`.
 
-```powershell
+```PowerShell
 PS P:\> $tasteoffood = read-host -Prompt "On a scale of 1 to 5, how would you rate the taste of your food"
 On a scale of 1 to 5, how would you rate the taste of your food: 5
 
@@ -264,7 +264,7 @@ That's not bad, it certainly looks like a survey.  But, there's nothing stopping
 
 Another way to handle it would be to define all the inputs and validations in the param block.  That's a little cleaner than coding all the validation ourselves.
 
-```powershell
+```PowerShell
 [Parameter(Mandatory=$True,
     HelpMessage='On a scale of 1 to 5 how would you rate the taste of your food'
 )]
@@ -274,7 +274,7 @@ Another way to handle it would be to define all the inputs and validations in th
 
 That's pretty clean, but it's not the best looking interface.  Here's what we get if we run that:
 
-```powershell
+```PowerShell
 Get-FreeBurritos
 cmdlet Get-FreeBurritos at command pipeline position 1
 Supply values for the following parameters:
@@ -288,7 +288,7 @@ PowerShell doing it's thing there, so it's just going to prompt us for a paramet
 
 In thinking about this problem I did stumble across a third way.  A dark, stormy way that is most certainly a bad idea.  An unholy combination of the above two methods that oddly enough seems to actually work.
 
-```powershell
+```PowerShell
 param(
     [Parameter(Mandatory=$True)]
     [ValidateSet('1','2','3','4','5')]
@@ -297,7 +297,7 @@ param(
 ```
 You would be right if your first reaction was *WTF is that?!?*  You would also be right if your next thought was *Does that nonsense actually work?*  It does actually, well sort of.  Let's look at our output:
 
-```powershell
+```PowerShell
 Get-FreeBurritos
 cmdlet Get-FreeBurritos at command pipeline position 1
 Supply values for the following parameters:
@@ -305,7 +305,7 @@ On a scale of 1 to 5 how would you rate the taste of your food: 1
 ```
 Now that looks like the kind of survey question we want to actually ask!  And because it's in the param block we still have our parameter validation and all that.  The downside is that our variable name is rather unwieldy, and in fact in our function any time we want to use that variable we have to reference the whole thing like this:
 
-```powershell
+```PowerShell
 write-output ${On a scale of 1 to 5 how would you rate the taste of your food}
 ```
 
@@ -351,13 +351,13 @@ At this point we've chosen one of the above methods (I won't judge!) and proceed
 
 Yeah that's the one!  Well all we have to do is recreate that!  Simple right?  Well I had a friend that used to tell me "*If you're not cheating you're not trying*" so let's cheat a little!  We're going to include a sample json file with our module and just import the contents on the sly.  So now we have an array of objects already in the format and order that we want it in.
 
-```powershell
+```PowerShell
 $formdata = get-content "$PSScriptRoot\sampleformdata.json" | convertfrom-json
 ```
 
 Now we just have to replace the form values with our survey answers!  That gets a little tedious but not super complicated.  We end up with two methods for doing that.  For some of our answers it's as straight forward as setting the value:
 
-```powershell
+```PowerShell
 $formdata[0].spl_q_chipotle_receipt_code_txt = $formattedReceiptCode
 $formdata[1].onf_q_chipotle_overall_experience_5ptscale = $OverallExperience
 $formdata[1].spl_q_chipotle_reason_for_score_cmt = $ReasonForScore
@@ -365,7 +365,7 @@ $formdata[1].spl_q_chipotle_reason_for_score_cmt = $ReasonForScore
 
 For our radio buttons we have to do a little more work.  Remember above when I mentioned that they have a somewhat cryptic method of storing the radio button selection?  They use a value of 10 or 20 or 30 or some increment like that to specify which button is selected.  Well we definitely don't want our survey question to ask for an answer of 10 or 20, we want human words like 'Dine-In' or 'Carry-Out', etc.  So let's use the good ol' `switch` construct.
 
-```powershell
+```PowerShell
 Switch ($ExperienceType){
     'Dine-In' {$formdata[2].onf_q_chipotle_experience_type_alt = '10'}
     'Carry-Out' {$formdata[2].onf_q_chipotle_experience_type_alt = '20'}

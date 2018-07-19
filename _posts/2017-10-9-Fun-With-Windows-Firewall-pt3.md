@@ -10,17 +10,17 @@ TL;DR get the code [here](https://github.com/murrahjm/misc-scripts/tree/master/W
 
 # Get-FirewallRules
 
-A quick word about the process.  Basically in all these cmdlets we find the way to get the data, the "hook", then we just add a bunch of window dressing to make it pretty and functional.  In this case we need to get a list of all the existing firewall rules on the server.  So that's our "hook".  then we just wrap that up and do all the usual powershell things like this:
+A quick word about the process.  Basically in all these cmdlets we find the way to get the data, the "hook", then we just add a bunch of window dressing to make it pretty and functional.  In this case we need to get a list of all the existing firewall rules on the server.  So that's our "hook".  then we just wrap that up and do all the usual PowerShell things like this:
 
 1. Get the data from the target machine.
-2. Turn the text output data into powershell objects.
+2. Turn the text output data into PowerShell objects.
 3. Define parameters to gather everything we need to retrieve the data.
 4. perform error handling on our connection to the remote machine.
 5. output objects in a pipeline-friendly format (object stream).
 
-So let's talk about this "hook".  Like our firewall log cmdlet we want this to be backward compatible to Windows Server 2008, so the latest built in cmdlets are no good to us.  A quick search turns up [this great article](https://blogs.technet.microsoft.com/heyscriptingguy/2010/07/03/hey-scripting-guy-weekend-scripter-how-to-retrieve-enabled-windows-firewall-rules/) by the scripting guy with exactly what we're looking for.  Turns out we can use [new-object](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/new-object) to reference com objects, and get our rules that way.  And hey, they're already objects instead of a wall of text!  So that work is done for us.  We're going to pretty it up a bit, replace some of the codes with words, but otherwise we'll just output that.
+So let's talk about this "hook".  Like our firewall log cmdlet we want this to be backward compatible to Windows Server 2008, so the latest built in cmdlets are no good to us.  A quick search turns up [this great article](https://blogs.technet.microsoft.com/heyscriptingguy/2010/07/03/hey-scripting-guy-weekend-scripter-how-to-retrieve-enabled-windows-firewall-rules/) by the scripting guy with exactly what we're looking for.  Turns out we can use [new-object](https://docs.microsoft.com/en-us/PowerShell/module/microsoft.PowerShell.utility/new-object) to reference com objects, and get our rules that way.  And hey, they're already objects instead of a wall of text!  So that work is done for us.  We're going to pretty it up a bit, replace some of the codes with words, but otherwise we'll just output that.
 
-```powershell
+```PowerShell
         $return = $(New-object -comObject HNetCfg.FwPolicy2).rules
             Foreach ($Rule in $Return){
 ...
@@ -47,7 +47,7 @@ So let's talk about this "hook".  Like our firewall log cmdlet we want this to b
 
 So that's pretty simple really, but let's do that window dressing.  First thing is our remote connection.  we want to be able to point this command at a remote machine and get our output.  WinRM makes this trivial but we do need a computername and possibly a set of alternate credentials.  And we don't want to try connecting to a bogus computername, so we'll do a quick validation of the parameter value.  That gives us a parameter block that looks like this:
 
-```powershell
+```PowerShell
     Param(
         [Parameter(Mandatory=$True,Position=1)]
         [ValidateScript({test-connection -computername $_ -count 1})]
@@ -59,9 +59,9 @@ So that's pretty simple really, but let's do that window dressing.  First thing 
 
 ```
 
-Next we'll want to handle any potential issues connecting to the remote machine with grace and dignity, like the Queen. (no not [that one](https://en.wikipedia.org/wiki/RuPaul)).  So we'll attempt to create a new powershell session (with or without credentials) and wrap that in a try/catch to catch those pesky errors.
+Next we'll want to handle any potential issues connecting to the remote machine with grace and dignity, like the Queen. (no not [that one](https://en.wikipedia.org/wiki/RuPaul)).  So we'll attempt to create a new PowerShell session (with or without credentials) and wrap that in a try/catch to catch those pesky errors.
 
-```powershell
+```PowerShell
         write-verbose "$FunctionName`:  Attempting WSMAN connection to $computername"
         Try {
             If ($Credential){
@@ -84,7 +84,7 @@ Ok, so we've turned on the firewall on our favorite business app server, and all
 
 We just need a computer name, a port, protocol, rule descriptor... oh wait, what if we want to do a dynamic rule for a service?  Ok so we just need a computername, a service name, a rule descriptor... oh right and we could also just want to do a rule for a particular executable.  Ok so we need a computer name, a program path, a... oh we just want to be able to pass a pre-formed rule in from the pipeline?  Like maybe the output from Get-FirewallRule? Ok hmm, well let's do all those things!  We can use [Parameter Sets](https://msdn.microsoft.com/en-us/library/dd878348(v=vs.85).aspx) to group our input options.  That will keep our service names out of our port-based rules, and our ports out of our program-based rules.  voila!
 
-```powershell
+```PowerShell
 Function Add-FirewallRule {
     [cmdletbinding(DefaultParameterSetName='byPort',SupportsShouldProcess=$True,ConfirmImpact='High')]
     Param(
@@ -123,7 +123,7 @@ Now that we have our parameter sets, let's walk through each one and see what we
 
 In this first parameter set we're going to create a firewall rule for a static Port/Protocol combo.
 
-```powershell
+```PowerShell
         'byPort' {
             $PortString = $ports -join ','
             $portstring = $Portstring.replace(' ','').replace(',,',',')
@@ -143,7 +143,7 @@ We're basically just doing string manipulation here.  Our 'Ports' parameter allo
 
 Here we're building a command string just like above, only we're providing the program path rather than port descriptors.  To keep thing simple we are calculating the rule name based on the name of the executable, and also statically setting some of the other options.
 
-```powershell
+```PowerShell
         'byProgram' {
             $ProgramName = split-path $programpath -Leaf
             $Name = $ProgramName
@@ -161,7 +161,7 @@ Here we're building a command string just like above, only we're providing the p
 
 Same as above but even simpler.  We simply take the service name, tack it into the command string and call it a day.
 
-```powershell
+```PowerShell
         'byService' {
             $Name = $ServiceName
             $CMDString = "netsh advfirewall firewall add rule `
@@ -178,7 +178,7 @@ Same as above but even simpler.  We simply take the service name, tack it into t
 
 This one is a little more complicated.  We have to make some assumptions here about the kind of input object we're going to receive.  It could be a rule for any of the above parameter sets, so it might have port or protocol properties, or it might just have a program path or a service.  In general though, we are going to assume that this object is coming from the Get-FirewallRules cmdlet, so it should be reasonably well structured.  So we're basically just going to iterate through every possible property for the input object.  If the property is set we'll add it to the command string and continue on.  At the end we should have a commadn that includes every provided value.
 
-```powershell
+```PowerShell
         'byInputObject' {
             $CMDString = "netsh advfirewall firewall add rule "
             If ($Rule.Name){

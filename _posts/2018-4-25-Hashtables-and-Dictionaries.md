@@ -11,7 +11,7 @@ When it's ~~ajar~~ a dictionary!  It would seem that today is data type week, st
 
 ## What is a Hash Table?
 
-[about_hash_tables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-6) defines a hash table as "a compact data structure that stores one or more key/value pairs" and says "...also known as a dictionary..."  Basically it looks like this:
+[about_hash_tables](https://docs.microsoft.com/en-us/PowerShell/module/microsoft.PowerShell.core/about/about_hash_tables?view=PowerShell-6) defines a hash table as "a compact data structure that stores one or more key/value pairs" and says "...also known as a dictionary..."  Basically it looks like this:
 
 ```PowerShell
 @{one=1;two=2}
@@ -36,7 +36,7 @@ $hashtable.values
 
 And you can add and remove items with the handy 'add' and 'remove' methods
 
-```powershell
+```PowerShell
  $hashtable.add
 
 OverloadDefinitions
@@ -54,7 +54,7 @@ void IDictionary.Remove(System.Object key)
 
 If you look at get-member you see we clearly have a hashtable
 
-```powershell
+```PowerShell
 $hashtable | gm
 
    TypeName: System.Collections.Hashtable

@@ -23,7 +23,7 @@ But wait there's more!  WinRM isn't just a web server, it's also a client (somet
 
 By default WinRM is like my 4 year old, it doesn't listen to anything.  But unlike my 4 year old getting it to listen to requests is pretty simple.
 
-```powershell
+```PowerShell
 # create a listener on all IP addresses using HTTP transport
 # The hard way:
 winrm create winrm/config/listener?Address=*+Transport=HTTP
@@ -34,7 +34,7 @@ winrm quickconfig
 
 So that works, but what if instead of talking to your 4 year old you want to talk to your wife about all the ice cream you're going to eat when the kids are asleep.  Then you're either spelling things or doing pig latin or something equally rediculous.  That's where HTTPS comes in (kids are worse than hackers, seriously).  That's a little more involved as you need a certificate on the host to use when enabling a listener.  But other than that you'd do it like this:
 
-```powershell
+```PowerShell
 # create a listener using HTTPS transport
 # The hard way:
 # First go find out the thumbprint of your server certificate
@@ -74,7 +74,7 @@ Listener
 
 Oh and on the off chance you want to remove a listener:
 
-```powershell
+```PowerShell
 winrm delete winrm/config/listener?Address=*+Transport=HTTPS
 # or:
 winrm delete winrm/config/listener?Address=*+Transport=HTTP
@@ -107,7 +107,7 @@ While the above authentication protocols are more or less various degrees of sec
 
 Now I'm not a security blogger so I won't get into a debate about credssp vs kerberos constrained delegation.  But if you need CredSSP for WinRM, you can enable it like this:
 
-```powershell
+```PowerShell
 #run this on the machine you're going to connect FROM
 Enable-WSManCredSSP -Role "Client" -DelegateComputer "Server1.domain.com" #ideally you restrict this to just a single machine you're connecting to.  You can use wildcards but see above warning about Jesus and puppies
 #run this on the machine you're connecting TO
@@ -177,11 +177,11 @@ Config
         MaxShellsPerUser = 30
 ```
 
-So that's a whole mess of stuff.  And it's not everything, but it's most of the things.  You can see there some of the things we've already talked about, the client authentication options, the server authentication options, some of the listener info.  You can see that "AllowUnencrypted" setting ([Don't change that](https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/).  No not even if some [product documentation](https://pubs.vmware.com/orchestrator-plugins/index.jsp?topic=%2Fcom.vmware.using.powershell.plugin.doc_10%2FGUID-D4ACA4EF-D018-448A-866A-DECDDA5CC3C1.html) tells you to).  This view is great as it shows you the heirarchy you can use to build any command.  So if you want to change any value, you just use the format:  ```winrm set <path/to/setting> @{key=value}```.  If you want to get a particular value you can use the same format with ```winrm get```.
+So that's a whole mess of stuff.  And it's not everything, but it's most of the things.  You can see there some of the things we've already talked about, the client authentication options, the server authentication options, some of the listener info.  You can see that "AllowUnencrypted" setting ([Don't change that](https://blogs.msdn.microsoft.com/PowerShell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/).  No not even if some [product documentation](https://pubs.vmware.com/orchestrator-plugins/index.jsp?topic=%2Fcom.vmware.using.PowerShell.plugin.doc_10%2FGUID-D4ACA4EF-D018-448A-866A-DECDDA5CC3C1.html) tells you to).  This view is great as it shows you the heirarchy you can use to build any command.  So if you want to change any value, you just use the format:  ```winrm set <path/to/setting> @{key=value}```.  If you want to get a particular value you can use the same format with ```winrm get```.
 
 So that's a pretty good tool, and if one tool is good, then two tools is even better!  Enter PowerShell:
 
-```powershell
+```PowerShell
 # PowerShell mounts the WSMan catalog as a file system or 'PSDrive'
 Get-PSDrive WSMan
 # standard filesystem commands like Get-ChildItem (gci or dir), Set-Location(cd) work
@@ -213,7 +213,7 @@ winrm set winrm/config/winrs @{MaxMemoryPerShellMB="2048"}
 
 or
 
-```powershell
+```PowerShell
 Set-item WSMan:\localhost\Shell\MaxShellsPerUser -Value 20
 ```
 
@@ -229,9 +229,9 @@ whew!  Ok so I may not have met my goal of keeping this to a one-cup of coffee p
 
 * [https://support.microsoft.com/en-us/help/2019527/how-to-configure-winrm-for-https](https://support.microsoft.com/en-us/help/2019527/how-to-configure-winrm-for-https)
 * [https://msdn.microsoft.com/en-us/library/ee309365(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/ee309365(v=vs.85).aspx)
-* [https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/](https://blogs.msdn.microsoft.com/powershell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/)
+* [https://blogs.msdn.microsoft.com/PowerShell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/](https://blogs.msdn.microsoft.com/PowerShell/2015/10/27/compromising-yourself-with-winrms-allowunencrypted-true/)
 * [https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/aa384372(v=vs.85).aspx)
-* [https://docs.microsoft.com/en-us/powershell/scripting/setup/winrmsecurity?view=powershell-5.1](https://docs.microsoft.com/en-us/powershell/scripting/setup/winrmsecurity?view=powershell-5.1)
+* [https://docs.microsoft.com/en-us/PowerShell/scripting/setup/winrmsecurity?view=PowerShell-5.1](https://docs.microsoft.com/en-us/PowerShell/scripting/setup/winrmsecurity?view=PowerShell-5.1)
 * [https://msdn.microsoft.com/en-us/library/ee309367(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/ee309367(v=vs.85).aspx)
 * [http://www.hurryupandwait.io/blog/certificate-password-less-based-authentication-in-winrm](http://www.hurryupandwait.io/blog/certificate-password-less-based-authentication-in-winrm)
 

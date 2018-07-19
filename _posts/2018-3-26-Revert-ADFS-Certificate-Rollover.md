@@ -61,7 +61,7 @@ Our rapid, short term resolution plan is basically to swap the secondary certifi
 ![Why are you grey!?](../assets/img/posts/ADFSCertificateRollover/CannotSetPrimary.PNG)
 You cannot manually select the primary certificate because auto-rollover is enabled.  This must be disabled before you can fix it.  Like most things, the best way to do this is with PowerShell.  Open a remote session to your primary ADFS server and run the following:
 
-``` powershell
+``` PowerShell
 #Disable automatic certificate rollover so we can manually swap the certificate roles
 Set-ADFSProperties -AutoCertificateRollover $False
 #Get the current secondary certificates
@@ -72,7 +72,7 @@ Set-AdfsCertificate -Thumbprint $TokenSigningSecondary.Thumbprint -IsPrimary -Ce
 Set-AdfsCertificate -Thumbprint $TokenDecryptingSecondary.Thumbprint -IsPrimary -CertificateType Token-Decrypting
 ```
 
-Technically after disabling certificate rollover with the first command above, you can go back to the management console and click that "Set as Primary" button.  But since you're already in powershell and likely in a hurry, that whole bit of code will do that for you.
+Technically after disabling certificate rollover with the first command above, you can go back to the management console and click that "Set as Primary" button.  But since you're already in PowerShell and likely in a hurry, that whole bit of code will do that for you.
 
 At this point you are officially reverted.  All your relying parties should be working again.  You still need to get those new certs into those relying parties, but you've got a little time now.  All of your bosses can go back to their spreadsheets, and you can start writing up your Post Mortem or Incident Report with a full explanation of how you saved the day!
 
@@ -84,7 +84,7 @@ This scenario occurs after the above.  Your certificates swapped roles a couple 
 
 Hopefully at this point all is calm, the phone has stopped ringing and you've finished explaining to the 50th person exactly what just happened.  So now what do you do?  Well first you've got to decide if you want to leave auto rollover disabled or turn it back on.  If you turn it back on you could possibly monitor for event ID 335 in the ADFS log, that will cover all of your certificate operations.  Maybe you want to leave it off though and just monitor the token-signing and token-decrypting certificates as they age.  This snippet can be used to determine the expiration date of a certificate, so you could watch for that to get near and then take action yourself.
 
-```powershell
+```PowerShell
 Get-AdfsCertificate -CertificateType "Token-Signing" | where-object{$_.isprimary -eq $True} | select-object -expandproperty certificate | select-object -expandproperty notafter
 ```
 
