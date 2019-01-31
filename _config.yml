@@ -23,6 +23,7 @@ footer-links:
   github: murrahjm
   linkedin: jeremymurrah
   twitter: JeremyMurrah
+  sqlshack_2018: 50
   
 disqus:
   shortname: murrahjm-github-io # to enable comments replace with your_disqus_shortname
@@ -50,6 +51,6 @@ permalink: /:title/
 compress_html:
   clippings: all
 
-plugins:
+plugins_dir:
   - jekyll-sitemap
   - jekyll-seo-tag

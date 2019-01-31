@@ -21,6 +21,10 @@
           {% include svg-icons/linkedin.html %}
         </a>
       {% endif %}
+      {% if site.footer-links.sqlshack_2018 %}
+        <a href="https://www.sqlshack.com/top-{{site.footer-links.sqlshack_2018}}-powershell-bloggers-of-2018" rel="nofollow" title="Top 50 PowerShell bloggers of 2018"><img alt="Top 50 PowerShell 2018" src="https://www.sqlshack.com/wp-content/uploads/2018/08/Powershell-{{site.footer-links.sqlshack_2018}}-2018-400px.png"/></a> 
+        </a>
+      {% endif %}
     </nav>
     <span>&copy; {{ site.time | date: '%Y' }} {{ site.title | escape }}. All rights reserved.</span>
   </div>
