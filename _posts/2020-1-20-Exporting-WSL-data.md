@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Moving WSL from one machine to another
-featured-img: linux
+featured-img: tux
 categories: [WSL]
 ---
 # Work is work and play is play, except for new laptop day.
