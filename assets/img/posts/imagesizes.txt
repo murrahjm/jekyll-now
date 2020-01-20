@@ -1,13 +1,13 @@
 Image sizes and names:
 
-<name>.jpg		1920x1080
 <name>_lg.jpg		1999x1125
+<name>.jpg		    1920x1080
+<name>_thumb@2x.jpg	1070x602
 <name>_md.jpg		991x557
-<name>_placehold.jpg	230x129
 <name>_sm.jpg		767x431
 <name>_thumb.jpg	535x301
-<name>_thumb@2x.jpg	1070x602
 <name>_xs.jpg		575x323
+<name>_placehold.jpg	230x129
 
 local hosting command for testing:
 
