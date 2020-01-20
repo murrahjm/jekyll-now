@@ -57,9 +57,9 @@ In order to get all of that and still have your backed-up environment, you've go
 If you want to use a different distribution, check out the list here: https://docs.microsoft.com/en-us/windows/wsl/install-manual.
 This may download a zip file instead of an appx file.  If so, rename it to .appx.  Alternately, use this powershell to download it.
 
-```powershell
-Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
-```
+    ```powershell
+    Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+    ```
 
 2. Run the appx file to install Ubuntu (or whatever distribution you downloaded).
 Even if your work policy blocks access to the Microsoft store you should be able to install a downloaded file.
@@ -84,9 +84,9 @@ The `rootfs` folder is gone, but that kind of makes sense since we removed our d
 Note in the command below that the folder for install must be the location of the original install above, specifically the `Localstate` subfolder.
 The distribution name probably has to be the same too, though I didn't test that.
 
-```cmd
-wsl.exe --import Ubuntu-18.04 C:\Users\jeremy\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\Localstate c:\users\jeremy\downloads\wsl-backup.tar
-```
+    ```cmd
+    wsl.exe --import Ubuntu-18.04 C:\Users\jeremy\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\Localstate c:\users\jeremy\downloads\wsl-backup.tar
+    ```
 
 6. At this point the rootfs folder should get recreated as your data is extracted into it.
 Run bash.exe (or wsl.exe), and a console window should open and login as root.
@@ -94,9 +94,9 @@ You can verify some of your files are there if you like.
 
 7. The last step is to configure the default user for linux, so it opens as you instead of root. This can be done with the following command
 
-```cmd
-ubuntu1804.exe config --default-user jeremy
-```
+    ```cmd
+    ubuntu1804.exe config --default-user jeremy
+    ```
 
 ## Wrap-up
 
