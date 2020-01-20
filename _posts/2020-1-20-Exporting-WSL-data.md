@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Managing Windows Machines with Ansible
+title: Moving WSL from one machine to another
 featured-img: linux
 categories: [WSL]
 ---
