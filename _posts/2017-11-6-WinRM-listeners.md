@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Windows Remote Management
+featured-img: Powershell
 comments: true
 categories: [PowerShell]
 ---
