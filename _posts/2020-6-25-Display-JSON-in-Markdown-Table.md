@@ -6,8 +6,10 @@ comments: true
 categories: [PowerShell]
 ---
 This will be a quick article, and hopefully useful to some folks.
-I came across this while trying to find a way to self-document some data from a REST API.
+I came up with this while trying to find a way to self-document some data from a REST API, and thought it could be useful for other folks as well.
 In my specific case, I'm working with the awx credential type data, but this method should work for any list data that you want to display cleanly.
+
+
 So let's just dive right in.
 Here is a sample of the data I retrieve from the REST API endpoint.
 
@@ -85,6 +87,11 @@ Also, because the `inputs` and `injectors` data contains complex sub elements, I
 YAML should work great for this purpose.
 So ultimately, this is what i would like to see:
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>HTML TABLE</title>
+</head><body>
 <table>
 <colgroup><col/><col/><col/></colgroup>
 <tr><th>name</th><th>inputs</th><th>injectors</th></tr>
@@ -120,6 +127,8 @@ env:
 
 </td></tr>
 </table>
+</body></html>
+
 
 Nice clean output, everything organized and readable markdown.
 Well technically it's a combination of markdown, yaml and html.
