@@ -87,17 +87,11 @@ Also, because the `inputs` and `injectors` data contains complex sub elements, I
 YAML should work great for this purpose.
 So ultimately, this is what i would like to see:
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>HTML TABLE</title>
-</head><body>
 <table>
 <colgroup><col/><col/><col/></colgroup>
 <tr><th>name</th><th>inputs</th><th>injectors</th></tr>
 <tr><td>Ansible Tower</td><td>
-
-```
+<pre>
 - id: host
   label: Ansible Tower Hostname
   type: string
@@ -113,21 +107,19 @@ So ultimately, this is what i would like to see:
   label: Verify SSL
   type: boolean
   secret: false
-```
-
+</pre>
 </td><td>
 
-```
+<pre>
 env:
   TOWER_HOST: '{{host}}'
   TOWER_USERNAME: '{{username}}'
   TOWER_PASSWORD: '{{password}}'
   TOWER_VERIFY_SSL: '{{verify_ssl}}'
-```
+</pre>
 
 </td></tr>
 </table>
-</body></html>
 
 
 Nice clean output, everything organized and readable markdown.
@@ -146,6 +138,10 @@ $output = foreach ($type in $cred_types){
         # the magic happens here, a little yaml mixed with some markdown codeblock markers
         inputs="`r`n`r`n" + '```' + "`r`n" + $($type.inputs.fields | convertto-yaml) + '```' + "`r`n`r`n"
         injectors="`r`n`r`n" + '```' + "`r`n" + $($type.injectors | convertto-yaml) + '```' + "`r`n`r`n"
+        # the above lines don't seem to play well when embedded in a jekyl page.  This is an alternate option if the above doesn't work
+        inputs="`r`n`r`n" + '<pre>' + "`r`n" + $($type.inputs.fields | convertto-yaml) + '</pre>' + "`r`n`r`n"
+        injectors="`r`n`r`n" + '<pre>' + "`r`n" + $($type.injectors | convertto-yaml) + '</pre>' + "`r`n`r`n"
+
     }
     new-object psobject -property $props
 }
@@ -160,6 +156,10 @@ The next trick is the display of our conplex objects.
 converting to yaml works great for getting the data in that readable format, but preserving the spacing was difficult, as everything kept trying to clean it up.
 Ultimately, a markdown code block served that purpose well, as it isolated the yaml from any parsing or formatting attempt, while itself fitting inside of a table cell.
 Also not the multiple new-lines, as markdown requires an empty line before and after any code blocks, for proper display.
+If the markdown code blocks don't work for you, an alternative is the `<pre>` tag.
+It's not quite as pretty as a color-coded `code` block, but it maintains the alignment, which is the primary goal.
+In fact this blog, which uses jekyll to present markdown, does not seem to like the code blocks, but does like the `<pre>` tag; go figure.
+
 
 There's not much more to say about it, it's pretty straightforward, if not a little convoluted.
 I originally created it for a single project (blog post on that incoming), but in theory it should work for just about any API data that you might want to display.
