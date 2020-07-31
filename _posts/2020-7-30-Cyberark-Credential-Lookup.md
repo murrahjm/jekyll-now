@@ -210,7 +210,7 @@ Safe=YOUR_SAFE_NAME;Object=Operating System-DOMAIN-ManualChangeandReconcile-admi
 
 The above data can be retrieved from the CyberArk web interface, when looking at an account details page.
 
-![CyberArk account details](../assets/img/posts/Tower/cyberark-account-details.png)
+![CyberArk account details](../assets/img/posts/Tower/Cyberark-account-details.png)
 
 Once the **OBJECT QUERY** field is populated, click the *OK* button to save the form.
 The **OBJECT QUERY FORMAT** and **REASON** field do not need to be modified.
