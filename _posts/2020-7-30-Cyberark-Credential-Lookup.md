@@ -165,7 +165,7 @@ Paste the data from the .key file into the **CLIENT KEY** field, and the content
 If you deleted the header data above, you can also drag and drop the file onto the fields.
 The important thing is that  `-----BEGIN CERTIFICATE-----` or `-----BEGIN PRIVATE KEY-----` are the first lines of each field.
 
-![add certs](../assets/img/posts/Tower/Tower-CyberArk-credential-add-certs.png)
+![add certs](../assets/img/posts/Tower/Tower-cyberark-credential-add-certs.png)
 
 Be sure to click the **SAVE** button before leaving this screen.
 If you haven't already, send the serial number of this certificate to your CyberArk administrator.
@@ -183,7 +183,7 @@ The following example will show how to create a new machine credential object an
 Navigate to the credentials section of Tower, and click on the `+` sign to create a new credential.
 Give the credential a recognizable name, and select `Machine` from the **CREDENTIAL TYPE** field.
 
-![new credential](../assets/img/posts/Tower/Tower-CyberArk-credential-add-machine.png)
+![new credential](../assets/img/posts/Tower/Tower-cyberark-credential-add-machine.png)
 
 the **USERNAME** field should be the fully qualified name of the account.
 If the account is an Active Directory account, the domain portion should be upper case, i.e. `admin@DOMAIN.COM` rather than `admin@domain.com`.
@@ -210,7 +210,7 @@ Safe=YOUR_SAFE_NAME;Object=Operating System-DOMAIN-ManualChangeandReconcile-admi
 
 The above data can be retrieved from the CyberArk web interface, when looking at an account details page.
 
-![CyberArk account details](../assets/img/posts/Tower/CyberArk-account-details.png)
+![CyberArk account details](../assets/img/posts/Tower/cyberark-account-details.png)
 
 Once the **OBJECT QUERY** field is populated, click the *OK* button to save the form.
 The **OBJECT QUERY FORMAT** and **REASON** field do not need to be modified.
