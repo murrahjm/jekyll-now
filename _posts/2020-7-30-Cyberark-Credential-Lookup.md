@@ -197,7 +197,7 @@ This next screen is where you define which account the password should be retrie
 The **OBJECT QUERY** field can take a few different formats, but is generally a semi-colon separated list of key-value pairs.
 It should include the vault name, and either the object name, or the username and address pair.
 
-![account query](../assets/img/posts/Tower\Tower-credential-source-query.png)
+![account query](../assets/img/posts/Tower/Tower-credential-source-query.png)
 
 Examples:
 ```
@@ -216,7 +216,7 @@ Once the **OBJECT QUERY** field is populated, click the *OK* button to save the 
 The **OBJECT QUERY FORMAT** and **REASON** field do not need to be modified.
 
 The **PASSWORD** field should now have a CyberArk credential object reference.
-![CyberArk lookup password field](../assets/img/posts/Tower\Tower-credential-password-value.png)
+![CyberArk lookup password field](../assets/img/posts/Tower/Tower-credential-password-value.png)
 
 Depending on use case, the **PRIVILEGE ESCALATION USERNAME** and **PRIVILEGE ESCALATION PASSWORD** fields may be filled out in the same manner.
 If used, the **PRIVILEGED ESCALATION METHOD** for a Windows account should be `runas`.
