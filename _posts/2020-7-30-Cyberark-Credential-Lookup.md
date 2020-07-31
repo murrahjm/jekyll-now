@@ -52,7 +52,7 @@ You can also use the **DESCRIPTION** field to list the CyberArk vaults the accou
 
 Once the credential type has been selected, additional fields will appear.
 
-![CyberArk credential details](../assets/img/posts/Tower/Tower-CyberArk-credential-details.png)
+![CyberArk credential details](../assets/img/posts/Tower/Tower-cyberark-credential-details.png)
 
 The **CyberArk AIM URL** should be the URL used to access your CyberArk web interface.
 
