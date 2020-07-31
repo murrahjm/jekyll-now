@@ -5,8 +5,8 @@ Image sizes and names:
 <name>_thumb@2x.jpg	1070x602
 <name>_md.jpg		991x557
 <name>_sm.jpg		767x431
-<name>_thumb.jpg	535x301
 <name>_xs.jpg		575x323
+<name>_thumb.jpg	535x301
 <name>_placehold.jpg	230x129
 
 local hosting command for testing:

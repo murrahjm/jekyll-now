@@ -3,4 +3,4 @@
 sudo apt-get update
 sudo apt-get install jekyll -y
 sudo gem install jekyll-seo
-jekyll serve -w --force_polling -D -H 192.168.1.71
+jekyll serve -w --force_polling -D -H 127.0.0.1

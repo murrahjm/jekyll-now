@@ -2,6 +2,7 @@
 layout: post
 title: All Along the Ansible Towers
 featured-img: ansible
+comments: true
 categories: [Ansible]
 ---
 
