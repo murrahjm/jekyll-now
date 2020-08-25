@@ -33,7 +33,6 @@ While only one of these is typically needed to perform account lookups, you may 
 
 > **Note:** If you are not the CyberArk administrator for your environment, you'll need to get with them to help set this up.
 This will require information sharing between both teams / products for the initial configuration.
-
 > **Also Note:** Most of the screenshots here came from a production corporate environment.
 Given that, many of the images will be redacted like a congressional memo.
 The general configuration workflow and necessary steps should still be adequately described, however.
@@ -66,6 +65,7 @@ The next section will detail the certificate creation process.
 For now the fields can be left blank and the credential object can be saved.
 
 ## Requesting a Client Certificate
+
 A client authentication certificate is slightly different in use than a web server certificate, but similar in creation.
 
 > **Note:** Most of this section assumes you are operating in an environment with an Active Directory integrated Windows Certificate Services infrastructure.
@@ -77,6 +77,7 @@ First a certificate signing request (CSR) is created, then submitted for signing
 The following command can be run from any Windows machine.
 Note the subject name in the example is a generic value, and should be changed to something more specific.
 Unlike a web server certificate, the subject name is not validated, so it doesn't need to represent a URL or anything specific.
+
 ```powershell
 # this subject name is a generic value, and should be changed to something
 # more unique, perhaps including the team name or vault name
@@ -100,8 +101,10 @@ $request = get-childitem cert:\LocalMachine\REQUEST\
 $enrollresult = get-certificate -Request $request
 $enrollresult | format-list *
 ```
+
 The above output should look something like this:
-```
+
+```powershell
 Status      : Issued
 Certificate : [Subject]
                 CN=AnsibleTowerCyberArk
@@ -121,11 +124,13 @@ Certificate : [Subject]
               [Thumbprint]
                 2AE5183D5F1969DAE9648087FF355F5D6C0435DE
 ```
+
 The certificate should also be listed in the local machine store.
 
 ```powershell
 get-childitem cert:\LocalMachine\My
 ```
+
 Take note of the `[Serial Number]` and `[Thumbprint]` values above, those will be needed later.
 The `[Serial Number]` value will be needed by the CyberArk administrator when securing access to the safes.
 
@@ -147,6 +152,7 @@ Copy the PFX file as needed, or install OpenSSL for Windows.
 OpenSSL for Windows will likely install in this path: "c:\program files\OpenSSL-win64\bin\OpenSSL.exe"
 The following commands will export the necessary info.
 Note that each will prompt for the password created when the PFX file was exported.
+
 ```cmd
 "c:\program files\OpenSSL-win64\bin\OpenSSL.exe" pkcs12 -in DELETEME.PFX -nocerts -out DELETEME.key -nodes
 
@@ -200,7 +206,8 @@ It should include the vault name, and either the object name, or the username an
 ![account query](../assets/img/posts/Tower/Tower-credential-source-query.png)
 
 Examples:
-```
+
+```cmd
 Safe=YOUR_SAFE_NAME;UserName=admin;Address=domain.com
 
 --or--
@@ -222,7 +229,7 @@ Depending on use case, the **PRIVILEGE ESCALATION USERNAME** and **PRIVILEGE ESC
 If used, the **PRIVILEGED ESCALATION METHOD** for a Windows account should be `runas`.
 The certificate fields do not typically apply to Windows accounts.
 
-Click on the *Save* button before leaving this screeen.
+Click on the *Save* button before leaving this screen.
 At this point the credential object is ready for use.
 It can be attached to a template and used for running playbooks.
 The password checkout query will be performed at runtime, without any user intervention required.
