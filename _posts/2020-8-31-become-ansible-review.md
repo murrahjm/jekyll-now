@@ -45,7 +45,7 @@ So I was definitely looking forward to learning a thing or two in this first sec
 The book layout reminds me of textbooks, or workbooks, with a very clear list of objectives at the start of each chapter, and a review section at the end.
 It's also designed for you to follow along, with clear instructions on commands to run and why.
 So I started following instructions and they just worked!
-In no time I had a container running with all the pieces I needed to continue on.
+In no time I had a container running with all the pieces I needed to continue.
 Following along I made a more and more complex command line for running my new container, and even published it to docker hub.
 It was a delight to walk through this, and it made for a very quick tutorial.
 
@@ -64,7 +64,7 @@ That didn't need to be included, but it is a nice touch, and very helpful.
 
 Now that the development environment is all set up, we are ready to start doing some coding.
 This section starts right off with an intro to git.
-This is such a foundational technology, and I'm glad he included it.
+This is such a foundational technology, and I'm glad Josh included it.
 I can't say truly from a beginner's perspective, but it feels like it strikes a good balance of explaining just enough to be effective, without getting down into the weeds.
 Again, this is just another tool in the tool belt.
 If you are new to git, definitely follow along and pay close attention to this chapter.
